@@ -1,9 +1,19 @@
-import { collection, getDocs } from "firebase/firestore"
-import { db } from "@/lib/firebase"
+"use client"
 
-export default async function Projects() {
-  const snap = await getDocs(collection(db, "projects"))
-  const projects = snap.docs.map(d => d.data())
+import { useEffect, useState } from "react"
+import { collection, getDocs } from "firebase/firestore"
+import { db } from "../../lib/firebase"
+
+export default function Projects() {
+  const [projects, setProjects] = useState([])
+
+  useEffect(() => {
+    const load = async () => {
+      const snap = await getDocs(collection(db, "projects"))
+      setProjects(snap.docs.map(d => d.data()))
+    }
+    load()
+  }, [])
 
   return (
     <main style={{ padding: 40 }}>
