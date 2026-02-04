@@ -9,14 +9,17 @@ export default async function Resume() {
   const projects = projectsSnap.docs.map(d => d.data())
 
   return (
-    <main style={{ padding: 40 }}>
+    <main style={{ padding: 40, maxWidth: 900 }}>
       <h1>{profile?.name}</h1>
       <h3>{profile?.title}</h3>
-      <p style={{ maxWidth: 700 }}>{profile?.summary}</p>
+      <p style={{ marginTop: 10 }}>{profile?.summary}</p>
 
       <hr style={{ margin: "30px 0" }} />
 
       <h2>Projects</h2>
+
+      {projects.length === 0 && <p>No projects yet.</p>}
+
       {projects.map((p, i) => (
         <div key={i} style={{ marginBottom: 20 }}>
           <strong>{p.title}</strong>
@@ -26,3 +29,4 @@ export default async function Resume() {
     </main>
   )
 }
+
