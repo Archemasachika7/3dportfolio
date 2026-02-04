@@ -28,6 +28,8 @@ export default function RootLayout({ children }) {
           <a href="/">Home</a>
           <a href="/resume">Resume</a>
           <a href="/projects">Projects</a>
+          <a href="/certificates">Certificates</a>
+
         </nav>
 
         {/* CONTENT */}
