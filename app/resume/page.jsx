@@ -1,27 +1,35 @@
-import { collection, getDocs } from "firebase/firestore"
-import { db } from "@/lib/firebase"
+"use client"
 
-export default async function Resume() {
-  const profileSnap = await getDocs(collection(db, "profile"))
-  const projectsSnap = await getDocs(collection(db, "projects"))
+import { useEffect, useState } from "react"
+import { collection, getDocs, doc, getDoc } from "firebase/firestore"
+import { db } from "../../lib/firebase"
 
-  const profile = profileSnap.docs[0]?.data()
-  const projects = projectsSnap.docs.map(d => d.data())
+export default function Resume() {
+  const [profile, setProfile] = useState(null)
+  const [projects, setProjects] = useState([])
+
+  useEffect(() => {
+    const load = async () => {
+      const pSnap = await getDoc(doc(db, "profile", "main"))
+      setProfile(pSnap.data())
+
+      const projSnap = await getDocs(collection(db, "projects"))
+      setProjects(projSnap.docs.map(d => d.data()))
+    }
+    load()
+  }, [])
 
   return (
     <main style={{ padding: 40, maxWidth: 900 }}>
       <h1>{profile?.name}</h1>
       <h3>{profile?.title}</h3>
-      <p style={{ marginTop: 10 }}>{profile?.summary}</p>
+      <p>{profile?.summary}</p>
 
       <hr style={{ margin: "30px 0" }} />
 
       <h2>Projects</h2>
-
-      {projects.length === 0 && <p>No projects yet.</p>}
-
       {projects.map((p, i) => (
-        <div key={i} style={{ marginBottom: 20 }}>
+        <div key={i}>
           <strong>{p.title}</strong>
           <p>{p.description}</p>
         </div>
@@ -29,4 +37,3 @@ export default async function Resume() {
     </main>
   )
 }
-
