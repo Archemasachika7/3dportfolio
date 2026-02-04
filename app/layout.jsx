@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Archishman | Portfolio",
+  title: "Archishman Das | Portfolio",
   description: "Civil Engineering & Data Science Portfolio"
 }
 
@@ -11,15 +11,18 @@ export default function RootLayout({ children }) {
           margin: 0,
           fontFamily: "Inter, system-ui, Arial",
           background: "#020617",
-          color: "#e5e7eb"
+          color: "#e5e7eb",
+          lineHeight: 1.6
         }}
       >
+        {/* NAVBAR */}
         <nav
           style={{
-            padding: "16px 32px",
+            padding: "20px 32px",
+            borderBottom: "1px solid #1e293b",
             display: "flex",
-            gap: 24,
-            borderBottom: "1px solid #1e293b"
+            gap: 28,
+            fontSize: 15
           }}
         >
           <a href="/">Home</a>
@@ -27,7 +30,10 @@ export default function RootLayout({ children }) {
           <a href="/projects">Projects</a>
         </nav>
 
-        {children}
+        {/* CONTENT */}
+        <main style={{ minHeight: "100vh" }}>
+          {children}
+        </main>
       </body>
     </html>
   )
