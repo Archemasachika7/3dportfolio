@@ -1,100 +1,61 @@
 "use client"
 
+import Hero3D from "../components/Hero3D"
 import { motion } from "framer-motion"
 
 export default function Home() {
   return (
     <section
       style={{
-        maxWidth: 1100,
-        margin: "0 auto",
-        padding: "80px 32px"
+        minHeight: "100vh",
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr"
       }}
     >
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
+      {/* LEFT — 3D */}
+      <div style={{ background: "#020617" }}>
+        <Hero3D />
+      </div>
+
+      {/* RIGHT — CONTENT */}
+      <div
+        style={{
+          padding: "80px 60px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center"
+        }}
       >
-        <h1
-          style={{
-            fontSize: 52,
-            lineHeight: 1.1,
-            maxWidth: 800
-          }}
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          style={{ fontSize: 48 }}
         >
           Archishman Das
-        </h1>
+        </motion.h1>
 
-        <p
-          style={{
-            marginTop: 16,
-            fontSize: 20,
-            color: "#94a3b8"
-          }}
-        >
+        <p style={{ color: "#94a3b8", fontSize: 18, marginTop: 12 }}>
           Civil Engineering · Jadavpur University  
           <br />
           BS Data Science · IIT Madras
         </p>
 
-        <p
-          style={{
-            marginTop: 28,
-            fontSize: 17,
-            maxWidth: 640
-          }}
-        >
-          I work at the intersection of engineering, data, and technology —
-          building systems that analyze, optimize, and scale real-world problems.
+        <p style={{ marginTop: 24, maxWidth: 520 }}>
+          I build systems at the intersection of engineering,
+          data, and technology — from structural logic to
+          intelligent web platforms.
         </p>
 
-        {/* FOCUS STRIP */}
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            flexWrap: "wrap",
-            marginTop: 36
-          }}
-        >
-          {[
-            "Structural Engineering",
-            "Data Science",
-            "Web Systems",
-            "Problem Solving"
-          ].map(tag => (
-            <span
-              key={tag}
-              style={{
-                padding: "6px 12px",
-                borderRadius: 20,
-                background: "#020617",
-                border: "1px solid #1e293b",
-                fontSize: 14
-              }}
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        {/* CTA */}
-        <div style={{ marginTop: 48, display: "flex", gap: 16 }}>
-          <a
-            href="/resume"
-            style={primaryBtn}
-          >
+        <div style={{ marginTop: 36, display: "flex", gap: 16 }}>
+          <a href="/resume" style={primaryBtn}>
             View Resume
           </a>
-          <a
-            href="/projects"
-            style={secondaryBtn}
-          >
+          <a href="/projects" style={secondaryBtn}>
             View Projects
           </a>
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
