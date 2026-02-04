@@ -20,20 +20,37 @@ export default function Resume() {
   }, [])
 
   return (
-    <main style={{ padding: 40, maxWidth: 900 }}>
-      <h1>{profile?.name}</h1>
-      <h3>{profile?.title}</h3>
-      <p>{profile?.summary}</p>
+    <section style={{ padding: "60px 32px", maxWidth: 900, margin: "auto" }}>
+      {/* HEADER */}
+      <div style={{ marginBottom: 40 }}>
+        <h1 style={{ fontSize: 36 }}>{profile?.name}</h1>
+        <p style={{ fontSize: 18, color: "#94a3b8" }}>
+          {profile?.title}
+        </p>
+        <p style={{ marginTop: 12, maxWidth: 700 }}>
+          {profile?.summary}
+        </p>
+      </div>
 
-      <hr style={{ margin: "30px 0" }} />
+      {/* PROJECTS */}
+      <h2 style={{ marginBottom: 20 }}>Projects</h2>
 
-      <h2>Projects</h2>
-      {projects.map((p, i) => (
-        <div key={i}>
-          <strong>{p.title}</strong>
-          <p>{p.description}</p>
-        </div>
-      ))}
-    </main>
+      <div style={{ display: "grid", gap: 16 }}>
+        {projects.map((p, i) => (
+          <div
+            key={i}
+            style={{
+              background: "#020617",
+              border: "1px solid #1e293b",
+              padding: 20,
+              borderRadius: 10
+            }}
+          >
+            <h3>{p.title}</h3>
+            <p style={{ color: "#cbd5f5" }}>{p.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
   )
 }
