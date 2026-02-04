@@ -1,7 +1,7 @@
 {
-  "name": "dynamic-portfolio",
-  "private": true,
+  "name": "dynamic-3d-portfolio",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "prebuild": "npm install",
@@ -12,7 +12,13 @@
     "next": "^14.2.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+
     "firebase": "^10.12.4",
-    "framer-motion": "^11.0.0"
+
+    "framer-motion": "^11.0.0",
+
+    "three": "^0.160.0",
+    "@react-three/fiber": "^8.15.16",
+    "@react-three/drei": "^9.100.0"
   }
 }
