@@ -15,28 +15,50 @@ export default function RootLayout({ children }) {
           lineHeight: 1.6
         }}
       >
-        {/* NAVBAR */}
+        {/* ================= NAVBAR ================= */}
         <nav
           style={{
             padding: "20px 32px",
             borderBottom: "1px solid #1e293b",
             display: "flex",
+            alignItems: "center",
             gap: 28,
             fontSize: 15
           }}
         >
-          <a href="/">Home</a>
-          <a href="/resume">Resume</a>
-          <a href="/projects">Projects</a>
-          <a href="/certificates">Certificates</a>
+          {/* LEFT SIDE LINKS */}
+          <a href="/" style={navLink}>Home</a>
+          <a href="/resume" style={navLink}>Resume</a>
+          <a href="/projects" style={navLink}>Projects</a>
+          <a href="/certificates" style={navLink}>Certificates</a>
 
+          {/* RIGHT SIDE ADMIN LINK */}
+          <a
+            href="/admin"
+            style={{
+              marginLeft: "auto",
+              fontSize: 13,
+              color: "#64748b",
+              textDecoration: "none"
+            }}
+          >
+            Admin
+          </a>
         </nav>
+        {/* =============== END NAVBAR =============== */}
 
-        {/* CONTENT */}
+        {/* PAGE CONTENT */}
         <main style={{ minHeight: "100vh" }}>
           {children}
         </main>
       </body>
     </html>
   )
+}
+
+/* ================= STYLES ================= */
+
+const navLink = {
+  color: "#e5e7eb",
+  textDecoration: "none"
 }
