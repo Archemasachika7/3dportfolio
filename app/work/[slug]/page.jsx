@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import { getProjectBySlug } from "../../../lib/queries"
+import ModelBlock from "../../../components/cad/ModelBlock"
 import styles from "./project.module.css"
 
 export const revalidate = 60
@@ -18,6 +19,10 @@ export default async function ProjectDetailPage({ params }) {
   if (!project) notFound()
 
   const heroUrl = project.hero_media_url || project.thumbnail_url
+
+  // 3D models get an interactive viewer; everything else stays in the flat grid.
+  const models = (project.media ?? []).filter((m) => m.media_type === "model" && m.storage_url)
+  const flatMedia = (project.media ?? []).filter((m) => m.media_type !== "model")
 
   return (
     <article className={styles.article}>
@@ -55,13 +60,37 @@ export default async function ProjectDetailPage({ params }) {
         </div>
       )}
 
-      {project.media?.length > 0 && (
+      {models.length > 0 && (
+        <div className={styles.models}>
+          <span className="label">3D MODELS</span>
+          {models.map((m) => (
+            <ModelBlock
+              key={m.id}
+              url={m.storage_url}
+              caption={m.caption}
+              alt={m.alt_text}
+            />
+          ))}
+        </div>
+      )}
+
+      {flatMedia.length > 0 && (
         <div className={styles.mediaGrid}>
-          {project.media.map((m) => (
+          {flatMedia.map((m) => (
             <div key={m.id} className={styles.mediaItem}>
               {m.storage_url && (
-                // eslint-disable-next-line @next/next/no-img-element -- remote Supabase Storage URL
-                <img src={m.storage_url} alt={m.alt_text || ""} className={styles.mediaImg} />
+                m.media_type === "video" ? (
+                  <video
+                    src={m.storage_url}
+                    className={styles.mediaImg}
+                    controls
+                    playsInline
+                    preload="none"
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element -- remote Supabase Storage URL
+                  <img src={m.storage_url} alt={m.alt_text || ""} className={styles.mediaImg} />
+                )
               )}
               {m.caption && <span className={styles.mediaCaption}>{m.caption}</span>}
             </div>

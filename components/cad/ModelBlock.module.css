@@ -1,0 +1,122 @@
+.block {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.placard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  border: var(--line-thickness) solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg-raised);
+  /* Faint technical grid, echoing the site's drawing language. */
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+.placardTop {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.12em;
+  padding: 3px 9px;
+  border: var(--line-thickness) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--bg-raised);
+}
+
+.fileName {
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  color: var(--ink-faint);
+  word-break: break-all;
+}
+
+.blurb {
+  margin: 0;
+  font-size: var(--fs-00);
+  color: var(--ink-muted);
+  max-width: 54ch;
+  line-height: 1.55;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.openBtn {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+  padding: 10px 18px;
+  border: var(--line-thickness-strong) solid var(--ink);
+  border-radius: var(--radius);
+  background: var(--ink);
+  color: var(--bg-raised);
+  cursor: pointer;
+  transition: background var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out), transform var(--t-micro) var(--ease-out);
+}
+
+.openBtn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.openBtn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.downloadLink,
+.unsupported {
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+}
+
+.downloadLink {
+  text-decoration: none;
+  border-bottom: var(--line-thickness) solid var(--line-strong);
+  padding-bottom: 2px;
+  transition: color var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out);
+}
+
+.downloadLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.unsupported {
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+.caption {
+  font-size: var(--fs-00);
+  color: var(--ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .openBtn:hover {
+    transform: none;
+  }
+}
