@@ -32,7 +32,7 @@ export default async function Home() {
       <DomainBranches domainNodes={domainNodes.primary} media={media} />
       <ProblemToDecision media={media} />
       <FeaturedProjects projects={featuredProjects} media={media} />
-      <ClosingSection profile={profile} />
+      <ClosingSection profile={profile} media={media} />
     </>
   )
 }
