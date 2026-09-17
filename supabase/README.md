@@ -9,8 +9,9 @@ Storage paths — do not fork the schema per repo.
 
 The first 7 migrations (`20260917200000` through `20260917200600`) have
 been applied to the live project — you ran them yourself via the SQL
-Editor. The 2 newest ones (`20260917210000`, `20260917210100`) have
-**not** been run yet:
+Editor. `20260917210200_seed_education.sql` has also been run (with its
+original 2022/2023 `start_year` values, before they were corrected to
+2024). The rest have **not** been confirmed run yet:
 
 - `20260917210000_redesign_homepage_media.sql` drops and recreates
   `homepage_media` with the fuller shape from the media-migration spec
@@ -19,7 +20,19 @@ Editor. The 2 newest ones (`20260917210000`, `20260917210100`) have
   had `media_path`/`video_path`/`mobile_media_path`. Safe to drop: the
   table was empty.
 - `20260917210100_seed_homepage_media.sql` inserts 10 rows pointing at
-  the MP4s already uploaded to `portfolio-public/VIDEOS/`.
+  the MP4s already uploaded to `portfolio-public/VIDEOS/`. **If the
+  homepage shows static fallback images instead of playing video, this
+  is almost certainly the migration that hasn't run yet** — run
+  `select count(*) from homepage_media;` in the SQL Editor to check; 0
+  rows means `MotionMedia` is correctly falling back to local images by
+  design, not broken.
+- `20260917210300_project_media_add_columns.sql` adds
+  `poster_path`/`caption` to `project_media`.
+- `20260917220000_fix_education_years.sql` — **run this one** even
+  though `20260917210200` already ran: that seed file uses a
+  `WHERE NOT EXISTS` guard, so re-running the corrected version of it is
+  a no-op once the rows exist. This is a plain `UPDATE` that actually
+  fixes the live rows to `start_year = 2024`.
 
 I still can't run these myself — see "Why I can't run these" below.
 
@@ -53,6 +66,9 @@ anything you'd mind losing (it currently only holds what
 | `20260917200600_seed_tags_and_nodes.sql` | Seeds the tag vocabulary and the primary-domain / role-lens `domain_nodes`, with `domain_node_tags` resolving each node to its tags |
 | `20260917210000_redesign_homepage_media.sql` | Drops and recreates `homepage_media` with the corrected column set |
 | `20260917210100_seed_homepage_media.sql` | Seeds 10 `homepage_media` rows pointing at the real uploaded MP4s |
+| `20260917210200_seed_education.sql` | Seeds Jadavpur University and IIT Madras education rows (already run, with now-outdated years) |
+| `20260917210300_project_media_add_columns.sql` | Adds `poster_path`/`caption` to `project_media` |
+| `20260917220000_fix_education_years.sql` | Corrects both education rows' `start_year` to 2024 via `UPDATE` (the seed file's guard makes re-running it a no-op) |
 
 ## Writes go through the service role only
 
