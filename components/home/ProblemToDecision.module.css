@@ -1,0 +1,95 @@
+.section {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--sp-8) var(--spine-x);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  text-align: center;
+  margin-bottom: var(--sp-7);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--fs-3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.chain {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--sp-5) 0;
+}
+
+.chainLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--line-thickness);
+  background: var(--line-strong);
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  background: var(--bg);
+  padding: 0 var(--sp-3);
+}
+
+.index {
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  color: var(--ink-faint);
+  transition: color var(--t-medium) var(--ease-out);
+  transition-delay: var(--step-delay, 0ms);
+}
+
+.word {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+  color: var(--ink-muted);
+  font-weight: 500;
+  transition: color var(--t-medium) var(--ease-out), font-size var(--t-medium) var(--ease-out);
+  transition-delay: var(--step-delay, 0ms);
+}
+
+.step[data-active="true"] .word {
+  color: var(--accent);
+  font-size: var(--fs-1);
+}
+
+.step[data-active="true"] .index {
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .chain {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sp-5);
+  }
+  .chainLine {
+    left: 20px;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: var(--line-thickness);
+    height: auto;
+  }
+  .step {
+    flex-direction: row;
+    padding: 0;
+    padding-left: var(--sp-3);
+  }
+}

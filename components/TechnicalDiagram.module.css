@@ -1,0 +1,40 @@
+.diagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+}
+
+.stepLabel {
+  font-size: var(--fs-000);
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.connector {
+  width: 18px;
+  height: var(--line-thickness);
+  background: var(--line-strong);
+  margin: 0 var(--sp-1);
+}
+
+@media (max-width: 480px) {
+  .connector {
+    width: 10px;
+  }
+}
