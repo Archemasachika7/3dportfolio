@@ -1,0 +1,25 @@
+.wrap {
+  position: relative;
+}
+
+.vertical {
+  width: var(--line-thickness-strong);
+  height: 100%;
+  min-height: 80px;
+}
+
+.horizontal {
+  height: var(--line-thickness-strong);
+  width: 100%;
+}
+
+.line {
+  position: absolute;
+  inset: 0;
+  background: var(--line-strong);
+  transform-origin: top;
+}
+
+.horizontal .line {
+  transform-origin: left;
+}

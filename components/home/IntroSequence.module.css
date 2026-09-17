@@ -1,0 +1,109 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.grid {
+  z-index: 0;
+}
+
+.systemTag {
+  position: absolute;
+  top: var(--sp-4);
+  left: var(--spine-x);
+  z-index: 1;
+}
+
+.fileTag {
+  position: absolute;
+  top: var(--sp-4);
+  right: var(--spine-x);
+  z-index: 1;
+}
+
+.center {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 var(--sp-4);
+}
+
+.nameMask {
+  overflow: hidden;
+}
+
+.name {
+  margin: 0;
+  font-size: var(--fs-5);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.descriptor {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-00);
+}
+
+.baseline {
+  margin-top: var(--sp-5);
+  width: min(560px, 70vw);
+  height: var(--line-thickness-strong);
+  background: var(--ink);
+  transform-origin: center;
+}
+
+.scrollCue {
+  position: absolute;
+  bottom: var(--sp-5);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-2);
+  z-index: 1;
+}
+
+.scrollLine {
+  width: var(--line-thickness);
+  height: 28px;
+  background: var(--line-strong);
+  animation: scrollPulse 1.8s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% {
+    transform: scaleY(0.4);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scrollLine {
+    animation: none;
+    transform: scaleY(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 720px) {
+  .name {
+    white-space: normal;
+  }
+  .fileTag {
+    display: none;
+  }
+}
