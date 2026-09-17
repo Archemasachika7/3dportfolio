@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
+import Image from "next/image"
 import MotionHeading from "../MotionHeading"
 import useReducedMotion from "../../hooks/useReducedMotion"
 import { thinkingSteps } from "../../data/career"
@@ -30,6 +31,15 @@ export default function ProblemToDecision() {
 
   return (
     <section className={styles.section} aria-label="How I think">
+      <Image
+        src="/images/methodology/ideas-models-impact.png"
+        alt=""
+        fill
+        loading="lazy"
+        sizes="100vw"
+        className={styles.backdrop}
+      />
+
       <div className={styles.intro}>
         <span className="label">03 / HOW I THINK</span>
         <MotionHeading as="h2" className={styles.heading} lines={["ONE WORKING PATTERN"]} />

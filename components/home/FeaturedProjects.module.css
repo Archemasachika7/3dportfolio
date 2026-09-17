@@ -18,6 +18,46 @@
   letter-spacing: -0.01em;
 }
 
+.bridge {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  width: 100%;
+  margin-top: var(--sp-7);
+  border: var(--line-thickness) solid var(--line);
+  overflow: hidden;
+}
+
+.bridgeImg {
+  object-fit: cover;
+}
+
+.bridgeLabel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  padding: var(--sp-3) var(--sp-4);
+  background: linear-gradient(to top, rgba(11, 12, 14, 0.6), transparent);
+  color: #f5f4f0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 960px) {
+  .bridge {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 640px) {
+  .bridge {
+    aspect-ratio: 4 / 5;
+  }
+}
+
 .footer {
   margin-top: var(--sp-6);
   padding-top: var(--sp-5);

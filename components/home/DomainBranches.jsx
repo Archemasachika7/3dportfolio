@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import LineSegment from "../LineSegment"
 import MotionHeading from "../MotionHeading"
 import { branches } from "../../data/career"
@@ -14,6 +15,17 @@ export default function DomainBranches() {
       <div className={styles.intro}>
         <span className="label">02 / ONE FOUNDATION — MULTIPLE APPLICATIONS</span>
         <MotionHeading as="h2" className={styles.heading} lines={["THE LINE BRANCHES"]} />
+      </div>
+
+      <div className={styles.atmosphere}>
+        <Image
+          src="/images/domains/one-foundation-four-domains.png"
+          alt=""
+          fill
+          loading="lazy"
+          sizes="(max-width: 960px) 100vw, 1180px"
+          className={styles.atmosphereImg}
+        />
       </div>
 
       <div className={styles.trunk}>

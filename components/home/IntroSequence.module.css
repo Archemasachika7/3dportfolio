@@ -11,6 +11,30 @@
   z-index: 0;
 }
 
+.heroVisual {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.16;
+}
+
+.heroVisualImg {
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (min-width: 901px) {
+  .heroVisual {
+    left: 46%;
+    opacity: 1;
+    -webkit-mask-image: linear-gradient(to right, transparent, black 22%);
+    mask-image: linear-gradient(to right, transparent, black 22%);
+  }
+  .heroVisual .heroVisualImg {
+    object-position: left center;
+  }
+}
+
 .systemTag {
   position: absolute;
   top: var(--sp-4);
@@ -33,6 +57,9 @@
   align-items: center;
   text-align: center;
   padding: 0 var(--sp-4);
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
 }
 
 .nameMask {
@@ -59,6 +86,25 @@
   height: var(--line-thickness-strong);
   background: var(--ink);
   transform-origin: center;
+}
+
+@media (min-width: 901px) {
+  .center {
+    align-items: flex-start;
+    text-align: left;
+    padding-left: var(--spine-x);
+  }
+  .nameMask {
+    width: min(700px, 58vw);
+  }
+  .name {
+    font-size: clamp(2.5rem, 5.5vw, 5rem);
+    white-space: normal;
+  }
+  .baseline {
+    transform-origin: left;
+    width: min(420px, 40vw);
+  }
 }
 
 .scrollCue {

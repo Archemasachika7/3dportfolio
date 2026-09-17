@@ -1,6 +1,7 @@
 "use client"
 
 import { useRef } from "react"
+import Image from "next/image"
 import { motion, useInView } from "framer-motion"
 import TechnicalDiagram from "../TechnicalDiagram"
 import styles from "./ProjectReveal.module.css"
@@ -59,11 +60,35 @@ export default function ProjectReveal({ project, index }) {
         <span className={styles.corner} data-pos="tr" aria-hidden="true" />
         <span className={styles.corner} data-pos="bl" aria-hidden="true" />
         <span className={styles.corner} data-pos="br" aria-hidden="true" />
-        <div className={`bg-grid ${styles.viewportGrid}`} />
-        <div className={styles.viewportContent}>
+
+        {project.cover ? (
+          <>
+            <Image
+              src={project.cover}
+              alt=""
+              fill
+              loading="lazy"
+              sizes="(max-width: 640px) 100vw, 1084px"
+              className={styles.viewportImg}
+            />
+            <span className={styles.viewportCaption}>CONCEPT VISUAL — NOT ACTUAL ANALYSIS OUTPUT</span>
+          </>
+        ) : (
+          <>
+            <div className={`bg-grid ${styles.viewportGrid}`} />
+            <div className={styles.viewportContent}>
+              <TechnicalDiagram steps={project.diagram} />
+            </div>
+          </>
+        )}
+      </motion.div>
+
+      {project.cover && (
+        <div className={styles.processStrip}>
+          <span className="label">PROCESS</span>
           <TechnicalDiagram steps={project.diagram} />
         </div>
-      </motion.div>
+      )}
     </article>
   )
 }
