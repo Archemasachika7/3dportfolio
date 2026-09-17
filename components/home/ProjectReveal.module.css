@@ -63,6 +63,34 @@
   z-index: 1;
 }
 
+.viewportImg {
+  object-fit: cover;
+  object-position: center;
+}
+
+.viewportCaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: var(--sp-2) var(--sp-3);
+  background: linear-gradient(to top, rgba(11, 12, 14, 0.55), transparent);
+  color: #f5f4f0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.processStrip {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-3);
+  flex-wrap: wrap;
+}
+
 .corner {
   position: absolute;
   width: 12px;

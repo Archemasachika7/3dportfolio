@@ -1,3 +1,4 @@
+import Image from "next/image"
 import MotionHeading from "../MotionHeading"
 import ProjectReveal from "./ProjectReveal"
 import { projects } from "../../data/career"
@@ -17,6 +18,18 @@ export default function FeaturedProjects() {
         {featured.map((project, i) => (
           <ProjectReveal key={project.id} project={project} index={i} />
         ))}
+      </div>
+
+      <div className={styles.bridge}>
+        <Image
+          src="/images/bridge/integrated-solutions.png"
+          alt=""
+          fill
+          loading="lazy"
+          sizes="(max-width: 960px) 100vw, 1180px"
+          className={styles.bridgeImg}
+        />
+        <span className={styles.bridgeLabel}>WHAT CONNECTS THESE DISCIPLINES — INTEGRATED SOLUTIONS</span>
       </div>
 
       <div className={styles.footer}>

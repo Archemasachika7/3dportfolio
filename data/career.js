@@ -71,6 +71,7 @@ export const projects = [
     tags: ["ETABS", "PYTHON", "IS 1893", "IS 456", "API AUTOMATION"],
     summary:
       "Automated structural analysis pipeline for a high-rise RCC tower under seismic loading, driving ETABS through a Python API layer.",
+    cover: "/images/projects/seismic-tower-cover.png",
     motionType: "structural",
     diagram: ["GRID", "COLUMNS", "BEAMS", "LOADS", "ANALYSIS", "DRIFT", "OPTIMISATION", "RESULT"],
     featured: true
@@ -83,6 +84,7 @@ export const projects = [
     tags: ["PYTHON", "PANDAS", "SCIKIT-LEARN", "TIME SERIES"],
     summary:
       "End-to-end forecasting pipeline turning raw transaction logs into validated demand signals for planning.",
+    cover: "/images/projects/data-insight-cover.png",
     motionType: "data-flow",
     diagram: ["DATA", "CLEAN", "TRANSFORM", "MODEL", "VALIDATE", "INSIGHT"],
     featured: true
@@ -95,6 +97,7 @@ export const projects = [
     tags: ["LINEAR PROGRAMMING", "EXCEL MODEL", "SENSITIVITY ANALYSIS"],
     summary:
       "Constraint-based optimisation model reducing allocation cost across a multi-site operation.",
+    cover: "/images/projects/analytics-decisions-cover.png",
     motionType: "diagram",
     diagram: ["CONSTRAINTS", "VARIABLES", "OBJECTIVE", "SOLVE", "SENSITIVITY", "DECISION"],
     featured: true
@@ -107,13 +110,14 @@ export const projects = [
     tags: ["STRATEGY", "OPERATIONS", "HIRING", "GOVERNANCE"],
     summary:
       "Founded and ran a twelve-person student organisation, from strategy through day-to-day operations.",
+    cover: "/images/projects/leadership-cover.png",
     motionType: "editorial",
-    diagram: ["VISION", "TEAM", "PROCESS", "EXECUTION", "REVIEW"],
+    diagram: ["IDEA", "PLAN", "EXECUTE", "SCALE", "LEAD"],
     featured: true
   }
 ]
 
-export const closingStatement = ["BUILD", "ANALYSE", "OPTIMISE"]
+export const closingStatement = ["BUILD", "ANALYSE", "OPTIMISE", "IMPACT"]
 
 export const closingLinks = [
   { label: "RESUME", href: "/resume" },

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import { identity } from "../../data/career"
 import useReducedMotion from "../../hooks/useReducedMotion"
@@ -7,9 +8,25 @@ import styles from "./IntroSequence.module.css"
 
 const easeOut = [0.16, 1, 0.3, 1]
 
+function HeroVisual() {
+  return (
+    <div className={styles.heroVisual} aria-hidden="true">
+      <Image
+        src="/images/hero/structural-hero.png"
+        alt=""
+        fill
+        priority
+        sizes="(max-width: 900px) 100vw, 54vw"
+        className={styles.heroVisualImg}
+      />
+    </div>
+  )
+}
+
 function StaticHero() {
   return (
     <section className={styles.hero} aria-label="Introduction">
+      <HeroVisual />
       <div className={`bg-grid ${styles.grid}`} />
       <span className={`label ${styles.systemTag}`}>{identity.systemTag}</span>
       <span className={`label ${styles.fileTag}`}>{identity.fileTag}</span>
@@ -33,6 +50,14 @@ function StaticHero() {
 function AnimatedHero() {
   return (
     <section className={styles.hero} aria-label="Introduction">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1.4, delay: 0.2 }}
+      >
+        <HeroVisual />
+      </motion.div>
+
       <motion.div
         className={`bg-grid ${styles.grid}`}
         initial={{ opacity: 0 }}

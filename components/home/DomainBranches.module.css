@@ -20,6 +20,19 @@
   letter-spacing: -0.01em;
 }
 
+.atmosphere {
+  position: relative;
+  aspect-ratio: 21 / 9;
+  width: 100%;
+  margin-bottom: var(--sp-6);
+  border: var(--line-thickness) solid var(--line);
+  overflow: hidden;
+}
+
+.atmosphereImg {
+  object-fit: cover;
+}
+
 .trunk {
   height: 56px;
   width: var(--line-thickness-strong);
@@ -78,6 +91,12 @@
   }
 }
 
+@media (max-width: 960px) {
+  .atmosphere {
+    aspect-ratio: 16 / 9;
+  }
+}
+
 @media (max-width: 640px) {
   .grid {
     grid-template-columns: 1fr;
@@ -87,5 +106,8 @@
   }
   .stub {
     display: none;
+  }
+  .atmosphere {
+    aspect-ratio: 4 / 5;
   }
 }

@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { motion } from "framer-motion"
 import MotionHeading from "../MotionHeading"
 import { closingStatement, closingLinks, identity } from "../../data/career"
@@ -8,6 +9,16 @@ import styles from "./ClosingSection.module.css"
 export default function ClosingSection() {
   return (
     <section className={styles.section} aria-label="Closing">
+      <Image
+        src="/images/closing/build-analyse-optimise.png"
+        alt=""
+        fill
+        loading="lazy"
+        sizes="100vw"
+        className={styles.backdrop}
+      />
+      <div className={styles.scrim} aria-hidden="true" />
+
       <div className={styles.converge}>
         <span className={styles.stub} data-i="0" aria-hidden="true" />
         <span className={styles.stub} data-i="1" aria-hidden="true" />
