@@ -1,0 +1,119 @@
+.tier {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-6);
+}
+
+.nodeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.node {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+  padding: 12px 20px;
+  border: var(--line-thickness) solid var(--line-strong);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: color var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out),
+    background var(--t-micro) var(--ease-out);
+}
+
+.node[data-variant="lens"] {
+  font-size: var(--fs-000);
+  padding: 8px 14px;
+  color: var(--ink-muted);
+}
+
+.node:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.node[data-active="true"] {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--bg);
+}
+
+.results {
+  margin-top: var(--sp-7);
+  padding-top: var(--sp-6);
+  border-top: var(--line-thickness) solid var(--line);
+}
+
+.resultsHeading {
+  margin: 0 0 var(--sp-5);
+  font-size: var(--fs-2);
+  font-weight: 600;
+}
+
+.status {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+}
+
+.resumeCard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-6);
+  border: var(--line-thickness) solid var(--line);
+}
+
+.resumeTitle {
+  font-weight: 500;
+}
+
+.resumeActions {
+  display: flex;
+  gap: var(--sp-3);
+  margin-left: auto;
+}
+
+.actionLink {
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--ink);
+  padding-bottom: 2px;
+  border-bottom: var(--line-thickness) solid var(--ink);
+  transition: color var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out);
+}
+
+.actionLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-4);
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .resumeActions {
+    margin-left: 0;
+  }
+}

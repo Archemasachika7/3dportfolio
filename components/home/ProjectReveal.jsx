@@ -1,9 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import Image from "next/image"
 import { motion, useInView } from "framer-motion"
-import TechnicalDiagram from "../TechnicalDiagram"
 import styles from "./ProjectReveal.module.css"
 
 const easeOut = [0.16, 1, 0.3, 1]
@@ -17,6 +15,9 @@ export default function ProjectReveal({ project, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, amount: 0.2 })
 
+  const primaryReport = project.reports?.[0]
+  const domainTag = project.tags?.[0]
+
   return (
     <article
       ref={ref}
@@ -26,9 +27,10 @@ export default function ProjectReveal({ project, index }) {
     >
       <div className={styles.meta}>
         <span className="label">
-          {String(index + 1).padStart(2, "0")} — {project.domain.toUpperCase()}
+          {String(index + 1).padStart(2, "0")}
+          {domainTag ? ` — ${domainTag.name.toUpperCase()}` : ""}
         </span>
-        <span className="label">{project.year}</span>
+        {project.year && <span className="label">{project.year}</span>}
       </div>
 
       <motion.h3
@@ -37,18 +39,22 @@ export default function ProjectReveal({ project, index }) {
         animate={inView ? { clipPath: "inset(0 0 0% 0)" } : undefined}
         transition={{ duration: 0.8, ease: easeOut }}
       >
-        {project.title}
+        <a href={`/work/${project.slug}`} className={styles.titleLink} data-cursor="project">
+          {project.title}
+        </a>
       </motion.h3>
 
-      <p className={styles.summary}>{project.summary}</p>
+      {project.short_bio && <p className={styles.summary}>{project.short_bio}</p>}
 
-      <ul className={styles.tags}>
-        {project.tags.map((tag) => (
-          <li key={tag} className={`label ${styles.tag}`}>
-            {tag}
-          </li>
-        ))}
-      </ul>
+      {project.tags?.length > 0 && (
+        <ul className={styles.tags}>
+          {project.tags.map((tag) => (
+            <li key={tag.id} className={`label ${styles.tag}`}>
+              {tag.name}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <motion.div
         className={styles.viewport}
@@ -61,34 +67,38 @@ export default function ProjectReveal({ project, index }) {
         <span className={styles.corner} data-pos="bl" aria-hidden="true" />
         <span className={styles.corner} data-pos="br" aria-hidden="true" />
 
-        {project.cover ? (
-          <>
-            <Image
-              src={project.cover}
-              alt=""
-              fill
-              loading="lazy"
-              sizes="(max-width: 640px) 100vw, 1084px"
-              className={styles.viewportImg}
-            />
-            <span className={styles.viewportCaption}>CONCEPT VISUAL — NOT ACTUAL ANALYSIS OUTPUT</span>
-          </>
+        {project.thumbnail_url ? (
+          // eslint-disable-next-line @next/next/no-img-element -- remote Supabase Storage URL
+          <img src={project.thumbnail_url} alt="" className={styles.viewportImg} />
         ) : (
-          <>
-            <div className={`bg-grid ${styles.viewportGrid}`} />
-            <div className={styles.viewportContent}>
-              <TechnicalDiagram steps={project.diagram} />
-            </div>
-          </>
+          <div className={`bg-grid ${styles.viewportGrid}`} />
         )}
       </motion.div>
 
-      {project.cover && (
-        <div className={styles.processStrip}>
-          <span className="label">PROCESS</span>
-          <TechnicalDiagram steps={project.diagram} />
-        </div>
-      )}
+      <div className={styles.actions}>
+        {primaryReport?.file_url && (
+          <a
+            href={primaryReport.file_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.actionLink}
+            data-cursor="interactive"
+          >
+            VIEW PDF
+          </a>
+        )}
+        {project.project_url && (
+          <a
+            href={project.project_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.actionLink}
+            data-cursor="interactive"
+          >
+            VISIT PROJECT →
+          </a>
+        )}
+      </div>
     </article>
   )
 }

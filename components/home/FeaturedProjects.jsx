@@ -1,12 +1,9 @@
-import Image from "next/image"
 import MotionHeading from "../MotionHeading"
+import MotionMedia from "../MotionMedia"
 import ProjectReveal from "./ProjectReveal"
-import { projects } from "../../data/career"
 import styles from "./FeaturedProjects.module.css"
 
-export default function FeaturedProjects() {
-  const featured = projects.filter((p) => p.featured)
-
+export default function FeaturedProjects({ projects = [], media = {} }) {
   return (
     <section className={styles.section} aria-label="Featured projects">
       <div className={styles.intro}>
@@ -14,27 +11,28 @@ export default function FeaturedProjects() {
         <MotionHeading as="h2" className={styles.heading} lines={["FEATURED PROJECTS"]} />
       </div>
 
-      <div className={styles.list}>
-        {featured.map((project, i) => (
-          <ProjectReveal key={project.id} project={project} index={i} />
-        ))}
-      </div>
+      {projects.length === 0 ? (
+        <p className={styles.empty}>No published projects yet.</p>
+      ) : (
+        <div className={styles.list}>
+          {projects.map((project, i) => (
+            <ProjectReveal key={project.id} project={project} index={i} />
+          ))}
+        </div>
+      )}
 
       <div className={styles.bridge}>
-        <Image
-          src="/images/bridge/integrated-solutions.png"
-          alt=""
-          fill
-          loading="lazy"
-          sizes="(max-width: 960px) 100vw, 1180px"
+        <MotionMedia
+          media={media?.integrated}
+          fallbackSrc="/images/bridge/integrated-solutions.png"
           className={styles.bridgeImg}
         />
         <span className={styles.bridgeLabel}>WHAT CONNECTS THESE DISCIPLINES — INTEGRATED SOLUTIONS</span>
       </div>
 
       <div className={styles.footer}>
-        <a href="/projects" className={styles.allLink} data-cursor="interactive">
-          ALL PROJECTS →
+        <a href="/work" className={styles.allLink} data-cursor="interactive">
+          ALL WORK →
         </a>
       </div>
     </section>

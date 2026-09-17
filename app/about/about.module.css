@@ -1,0 +1,139 @@
+.section {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: var(--sp-8) var(--spine-x);
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-7);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--fs-3);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.headline {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-1);
+}
+
+.block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding: var(--sp-6) 0;
+  border-top: var(--line-thickness) solid var(--line);
+}
+
+.bio {
+  margin: 0;
+  color: var(--ink-muted);
+  max-width: 64ch;
+}
+
+.empty {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+}
+
+.educationList,
+.achievementList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.educationItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.educationInstitution {
+  font-weight: 600;
+}
+
+.educationMeta {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-muted);
+}
+
+.focus {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+}
+
+.status {
+  margin: 0;
+  color: var(--ink-muted);
+}
+
+.achievementItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.achievementTitle {
+  font-weight: 600;
+  display: block;
+}
+
+.achievementDescription {
+  display: block;
+  color: var(--ink-muted);
+  font-size: var(--fs-00);
+  margin-top: 2px;
+}
+
+.achievementMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  white-space: nowrap;
+}
+
+.achievementValue {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.contactLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+.actionLink {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  color: var(--ink);
+  padding-bottom: 2px;
+  border-bottom: var(--line-thickness) solid var(--ink);
+  transition: color var(--t-micro) var(--ease-out),
+    border-color var(--t-micro) var(--ease-out);
+}
+
+.actionLink:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}

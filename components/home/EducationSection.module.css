@@ -11,6 +11,12 @@
   margin-bottom: var(--sp-7);
 }
 
+.empty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+}
+
 .heading {
   margin: 0;
   font-size: var(--fs-3);

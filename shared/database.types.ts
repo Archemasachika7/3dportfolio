@@ -96,7 +96,9 @@ export interface ProjectMedia {
   project_id: UUID
   media_type: ProjectMediaType
   storage_path: string
+  poster_path: string | null
   alt_text: string | null
+  caption: string | null
   display_order: number
   featured: boolean
   motion_type: string | null
@@ -132,13 +134,19 @@ export interface Resume {
   updated_at: string
 }
 
+export type HomepageMediaType = "image" | "video"
+
 export interface HomepageMedia {
   id: UUID
   section_key: string
-  media_path: string | null
-  mobile_media_path: string | null
-  video_path: string | null
+  media_type: HomepageMediaType
+  storage_path: string | null
+  poster_path: string | null
+  mobile_storage_path: string | null
+  alt_text: string | null
+  motion_type: string | null
   enabled: boolean
+  sort_order: number
   created_at: string
   updated_at: string
 }

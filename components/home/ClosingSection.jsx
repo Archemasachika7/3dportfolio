@@ -1,20 +1,24 @@
 "use client"
 
-import Image from "next/image"
 import { motion } from "framer-motion"
+import MotionMedia from "../MotionMedia"
 import MotionHeading from "../MotionHeading"
 import { closingStatement, closingLinks, identity } from "../../data/career"
 import styles from "./ClosingSection.module.css"
 
-export default function ClosingSection() {
+export default function ClosingSection({ profile, media }) {
+  const name = profile?.name || identity.name
+  const links = closingLinks.map((link) =>
+    link.label === "CONTACT" && profile?.email
+      ? { ...link, href: `mailto:${profile.email}` }
+      : link
+  )
+
   return (
     <section className={styles.section} aria-label="Closing">
-      <Image
-        src="/images/closing/build-analyse-optimise.png"
-        alt=""
-        fill
-        loading="lazy"
-        sizes="100vw"
+      <MotionMedia
+        media={media?.closing}
+        fallbackSrc="/images/closing/build-analyse-optimise.png"
         className={styles.backdrop}
       />
       <div className={styles.scrim} aria-hidden="true" />
@@ -44,7 +48,7 @@ export default function ClosingSection() {
         transition={{ duration: 0.6 }}
         aria-label="Contact and profiles"
       >
-        {closingLinks.map((link) => (
+        {links.map((link) => (
           <a
             key={link.label}
             href={link.href}
@@ -56,7 +60,7 @@ export default function ClosingSection() {
         ))}
       </motion.nav>
 
-      <p className={styles.signature}>{identity.name}</p>
+      <p className={styles.signature}>{name}</p>
     </section>
   )
 }
