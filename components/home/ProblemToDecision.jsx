@@ -1,13 +1,13 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import Image from "next/image"
+import MotionMedia from "../MotionMedia"
 import MotionHeading from "../MotionHeading"
 import useReducedMotion from "../../hooks/useReducedMotion"
 import { thinkingSteps } from "../../data/career"
 import styles from "./ProblemToDecision.module.css"
 
-export default function ProblemToDecision() {
+export default function ProblemToDecision({ media }) {
   const ref = useRef(null)
   const [active, setActive] = useState(false)
   const reduced = useReducedMotion()
@@ -31,12 +31,9 @@ export default function ProblemToDecision() {
 
   return (
     <section className={styles.section} aria-label="How I think">
-      <Image
-        src="/images/methodology/ideas-models-impact.png"
-        alt=""
-        fill
-        loading="lazy"
-        sizes="100vw"
+      <MotionMedia
+        media={media?.methodology}
+        fallbackSrc="/images/methodology/ideas-models-impact.png"
         className={styles.backdrop}
       />
 

@@ -18,6 +18,14 @@
   letter-spacing: -0.01em;
 }
 
+.empty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+  padding: var(--sp-6) 0;
+  border-top: var(--line-thickness) solid var(--line);
+}
+
 .bridge {
   position: relative;
   aspect-ratio: 21 / 9;

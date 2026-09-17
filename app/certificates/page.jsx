@@ -1,44 +1,41 @@
-"use client"
+import styles from "./certificates.module.css"
 
-import MotionWrapper from "../../components/MotionWrapper"
+export const metadata = {
+  title: "Certificates | Archishman Das",
+  description: "Certificates, scores and academic credentials."
+}
+
+const items = [
+  {
+    title: "BS Data Science",
+    issuer: "IIT Madras",
+    year: "2024"
+  },
+  {
+    title: "Programming & DSA",
+    issuer: "Self / Online",
+    year: "2023"
+  }
+]
 
 export default function Certificates() {
-  const items = [
-    {
-      title: "BS Data Science",
-      issuer: "IIT Madras",
-      year: "2024"
-    },
-    {
-      title: "Programming & DSA",
-      issuer: "Self / Online",
-      year: "2023"
-    }
-  ]
-
   return (
-    <section style={{ maxWidth: 900, margin: "auto", padding: "80px 32px" }}>
-      <h1>Certificates & Scores</h1>
-
-      <div style={{ marginTop: 32, display: "grid", gap: 20 }}>
-        {items.map((c, i) => (
-          <MotionWrapper key={i} delay={i * 0.1}>
-            <div
-              style={{
-                background: "#020617",
-                border: "1px solid #1e293b",
-                borderRadius: 14,
-                padding: 24
-              }}
-            >
-              <h3>{c.title}</h3>
-              <p style={{ color: "#94a3b8" }}>
-                {c.issuer} · {c.year}
-              </p>
-            </div>
-          </MotionWrapper>
-        ))}
+    <section className={styles.section} aria-label="Certificates">
+      <div className={styles.intro}>
+        <span className="label">CREDENTIALS</span>
+        <h1 className={styles.heading}>CERTIFICATES & SCORES</h1>
       </div>
+
+      <ul className={styles.list}>
+        {items.map((item) => (
+          <li key={item.title} className={styles.item}>
+            <span className={styles.itemTitle}>{item.title}</span>
+            <span className={styles.itemMeta}>
+              {item.issuer} · {item.year}
+            </span>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }

@@ -1,13 +1,38 @@
 "use client"
 
 import { useState } from "react"
-import Image from "next/image"
 import LineSegment from "../LineSegment"
 import MotionHeading from "../MotionHeading"
-import { branches } from "../../data/career"
+import MotionMedia from "../MotionMedia"
 import styles from "./DomainBranches.module.css"
 
-export default function DomainBranches() {
+// Short connective copy per domain — presentational only, not "career
+// facts". The domains themselves, their order and their tags all come
+// from Supabase (domain_nodes); this is just fallback marketing text
+// for when a node has no admin-entered description yet.
+const SUMMARY_BY_SLUG = {
+  engineering: "Structural systems, seismic design, computational modelling.",
+  "data-ai": "Statistical modelling, machine learning, applied inference.",
+  "business-analytics": "Decision systems, optimisation, market and operations analysis.",
+  leadership: "Building and running teams, ventures, and student organisations."
+}
+
+// domain_node.slug -> homepage_media.section_key for the per-card visual.
+const MEDIA_KEY_BY_SLUG = {
+  engineering: "engineering",
+  "data-ai": "data",
+  "business-analytics": "analytics",
+  leadership: "leadership"
+}
+
+const FALLBACK_IMAGE_BY_SLUG = {
+  engineering: "/images/projects/seismic-tower-cover.png",
+  "data-ai": "/images/projects/data-insight-cover.png",
+  "business-analytics": "/images/projects/analytics-decisions-cover.png",
+  leadership: "/images/projects/leadership-cover.png"
+}
+
+export default function DomainBranches({ domainNodes = [], media = {} }) {
   const [active, setActive] = useState(null)
 
   return (
@@ -18,41 +43,53 @@ export default function DomainBranches() {
       </div>
 
       <div className={styles.atmosphere}>
-        <Image
-          src="/images/domains/one-foundation-four-domains.png"
-          alt=""
-          fill
-          loading="lazy"
-          sizes="(max-width: 960px) 100vw, 1180px"
+        <MotionMedia
+          media={media?.domains}
+          fallbackSrc="/images/domains/one-foundation-four-domains.png"
           className={styles.atmosphereImg}
         />
       </div>
 
-      <div className={styles.trunk}>
-        <LineSegment start="top 90%" end="bottom 55%" />
-      </div>
-
-      <span className={styles.crossbar} aria-hidden="true" />
-
-      <div className={styles.grid}>
-        {branches.map((branch) => (
-          <div
-            key={branch.id}
-            className={styles.branch}
-            data-dim={active && active !== branch.id ? "true" : "false"}
-            data-cursor="interactive"
-            onMouseEnter={() => setActive(branch.id)}
-            onMouseLeave={() => setActive(null)}
-            onFocus={() => setActive(branch.id)}
-            onBlur={() => setActive(null)}
-            tabIndex={0}
-          >
-            <span className={styles.stub} aria-hidden="true" />
-            <span className="label">{branch.label}</span>
-            <p className={styles.summary}>{branch.summary}</p>
+      {domainNodes.length === 0 ? (
+        <p className={styles.empty}>Career map — awaiting content.</p>
+      ) : (
+        <>
+          <div className={styles.trunk}>
+            <LineSegment start="top 90%" end="bottom 55%" />
           </div>
-        ))}
-      </div>
+
+          <span className={styles.crossbar} aria-hidden="true" />
+
+          <div className={styles.grid}>
+            {domainNodes.map((node) => (
+              <div
+                key={node.id}
+                className={styles.branch}
+                data-dim={active && active !== node.slug ? "true" : "false"}
+                data-cursor="interactive"
+                onMouseEnter={() => setActive(node.slug)}
+                onMouseLeave={() => setActive(null)}
+                onFocus={() => setActive(node.slug)}
+                onBlur={() => setActive(null)}
+                tabIndex={0}
+              >
+                <span className={styles.stub} aria-hidden="true" />
+                <div className={styles.branchVisual}>
+                  <MotionMedia
+                    media={media?.[MEDIA_KEY_BY_SLUG[node.slug]]}
+                    fallbackSrc={FALLBACK_IMAGE_BY_SLUG[node.slug] ?? "/images/domains/one-foundation-four-domains.png"}
+                    className={styles.branchVisualImg}
+                  />
+                </div>
+                <span className="label">{node.label}</span>
+                <p className={styles.summary}>
+                  {node.description || SUMMARY_BY_SLUG[node.slug] || ""}
+                </p>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
     </section>
   )
 }

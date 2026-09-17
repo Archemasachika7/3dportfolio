@@ -1,41 +1,39 @@
 "use client"
 
-import Image from "next/image"
 import { motion } from "framer-motion"
+import MotionMedia from "../MotionMedia"
 import { identity } from "../../data/career"
 import useReducedMotion from "../../hooks/useReducedMotion"
 import styles from "./IntroSequence.module.css"
 
 const easeOut = [0.16, 1, 0.3, 1]
 
-function HeroVisual() {
+function HeroVisual({ media }) {
   return (
     <div className={styles.heroVisual} aria-hidden="true">
-      <Image
-        src="/images/hero/structural-hero.png"
-        alt=""
-        fill
+      <MotionMedia
+        media={media}
+        fallbackSrc="/images/hero/structural-hero.png"
         priority
-        sizes="(max-width: 900px) 100vw, 54vw"
         className={styles.heroVisualImg}
       />
     </div>
   )
 }
 
-function StaticHero() {
+function StaticHero({ name, descriptor, media }) {
   return (
     <section className={styles.hero} aria-label="Introduction">
-      <HeroVisual />
+      <HeroVisual media={media} />
       <div className={`bg-grid ${styles.grid}`} />
       <span className={`label ${styles.systemTag}`}>{identity.systemTag}</span>
       <span className={`label ${styles.fileTag}`}>{identity.fileTag}</span>
 
       <div className={styles.center}>
         <div className={styles.nameMask}>
-          <h1 className={styles.name}>{identity.name}</h1>
+          <h1 className={styles.name}>{name}</h1>
         </div>
-        <p className={`label ${styles.descriptor}`}>{identity.descriptor}</p>
+        <p className={`label ${styles.descriptor}`}>{descriptor}</p>
         <div className={styles.baseline} />
       </div>
 
@@ -47,7 +45,7 @@ function StaticHero() {
   )
 }
 
-function AnimatedHero() {
+function AnimatedHero({ name, descriptor, media }) {
   return (
     <section className={styles.hero} aria-label="Introduction">
       <motion.div
@@ -55,7 +53,7 @@ function AnimatedHero() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1.4, delay: 0.2 }}
       >
-        <HeroVisual />
+        <HeroVisual media={media} />
       </motion.div>
 
       <motion.div
@@ -91,7 +89,7 @@ function AnimatedHero() {
             animate={{ y: "0%" }}
             transition={{ duration: 1.1, delay: 0.7, ease: easeOut }}
           >
-            {identity.name}
+            {name}
           </motion.h1>
         </div>
 
@@ -101,7 +99,7 @@ function AnimatedHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 1.7 }}
         >
-          {identity.descriptor}
+          {descriptor}
         </motion.p>
 
         <motion.div
@@ -125,7 +123,15 @@ function AnimatedHero() {
   )
 }
 
-export default function IntroSequence() {
+export default function IntroSequence({ profile, media }) {
   const reduced = useReducedMotion()
-  return reduced ? <StaticHero /> : <AnimatedHero />
+  const name = profile?.name || identity.name
+  const descriptor = profile?.headline || identity.descriptor
+  const heroMedia = media?.hero
+
+  return reduced ? (
+    <StaticHero name={name} descriptor={descriptor} media={heroMedia} />
+  ) : (
+    <AnimatedHero name={name} descriptor={descriptor} media={heroMedia} />
+  )
 }

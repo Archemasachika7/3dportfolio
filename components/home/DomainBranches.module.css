@@ -74,11 +74,37 @@
   background: var(--line-strong);
 }
 
+.branchVisual {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--line-thickness) solid var(--line);
+}
+
+.branchVisualImg {
+  object-fit: cover;
+  opacity: 0.7;
+  transition: opacity var(--t-medium) var(--ease-out);
+}
+
+.branch:hover .branchVisualImg,
+.branch:focus-visible .branchVisualImg {
+  opacity: 1;
+}
+
 .summary {
   margin: 0;
   color: var(--ink-muted);
   font-size: var(--fs-00);
   max-width: 30ch;
+}
+
+.empty {
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+  text-align: center;
 }
 
 .branch[data-dim="true"] {
