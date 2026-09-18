@@ -7,6 +7,7 @@ import styles from "./SiteNav.module.css"
 const NAV_LINKS = [
   { href: "/work", label: "WORK" },
   { href: "/map", label: "MAP" },
+  { href: "/viewer", label: "VIEWER" },
   { href: "/resume", label: "RESUME" },
   { href: "/about", label: "ABOUT" }
 ]

@@ -4,18 +4,19 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm install",
+    "prebuild": "npm install && node scripts/copy-cad-wasm.mjs",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "postinstall": "node scripts/copy-cad-wasm.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.4",
+    "framer-motion": "^11.0.0",
+    "gsap": "^3.12.5",
     "next": "^14.2.5",
+    "occt-import-js": "^0.0.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-
-    "@supabase/supabase-js": "^2.45.4",
-
-    "framer-motion": "^11.0.0",
-    "gsap": "^3.12.5"
+    "three": "^0.186.0"
   }
 }
