@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useCallback, useEffect, useRef, useState, useTransition } from "react"
+import { useSearchParams } from "next/navigation"
 import WorkCard from "../work/WorkCard"
 import { getProjectsByTagSlugs, getBestMatchingResume } from "../../lib/queries"
 import styles from "./MapExplorer.module.css"
@@ -10,8 +11,11 @@ export default function MapExplorer({ primary, lens }) {
   const [projects, setProjects] = useState([])
   const [resume, setResume] = useState(null)
   const [isPending, startTransition] = useTransition()
+  const searchParams = useSearchParams()
+  const resultsRef = useRef(null)
+  const deepLinked = useRef(false)
 
-  const selectNode = (node) => {
+  const selectNode = useCallback((node) => {
     setSelected(node)
     startTransition(async () => {
       const tagSlugs = node.tags.map((t) => t.slug)
@@ -22,7 +26,23 @@ export default function MapExplorer({ primary, lens }) {
       setProjects(proj)
       setResume(res)
     })
-  }
+  }, [])
+
+  // Deep link from elsewhere on the site (e.g. a homepage domain card):
+  // /map?node=<slug> opens straight into that domain's resume and work.
+  useEffect(() => {
+    if (deepLinked.current) return
+    const slug = searchParams.get("node")
+    if (!slug) return
+    const match = [...primary, ...lens].find((n) => n.slug === slug)
+    if (!match) return
+    deepLinked.current = true
+    selectNode(match)
+    // Let the results render before scrolling to them.
+    requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    })
+  }, [searchParams, primary, lens, selectNode])
 
   return (
     <div>
@@ -66,7 +86,7 @@ export default function MapExplorer({ primary, lens }) {
       )}
 
       {selected && (
-        <div className={styles.results} aria-live="polite">
+        <div className={styles.results} aria-live="polite" ref={resultsRef}>
           <h2 className={styles.resultsHeading}>{selected.label}</h2>
 
           {isPending ? (
