@@ -62,8 +62,11 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
 
           <div className={styles.grid}>
             {domainNodes.map((node) => (
-              <div
+              // Opens the map with this domain preselected, which surfaces
+              // the resume tagged for that path along with its work.
+              <a
                 key={node.id}
+                href={`/map?node=${encodeURIComponent(node.slug)}`}
                 className={styles.branch}
                 data-dim={active && active !== node.slug ? "true" : "false"}
                 data-cursor="interactive"
@@ -71,7 +74,6 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
                 onMouseLeave={() => setActive(null)}
                 onFocus={() => setActive(node.slug)}
                 onBlur={() => setActive(null)}
-                tabIndex={0}
               >
                 <span className={styles.stub} aria-hidden="true" />
                 <div className={styles.branchVisual}>
@@ -85,7 +87,8 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
                 <p className={styles.summary}>
                   {node.description || SUMMARY_BY_SLUG[node.slug] || ""}
                 </p>
-              </div>
+                <span className={styles.cue}>RESUME &amp; WORK →</span>
+              </a>
             ))}
           </div>
         </>

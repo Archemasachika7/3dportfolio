@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import MapExplorer from "../../components/map/MapExplorer"
 import { getDomainNodes } from "../../lib/queries"
 import styles from "./map.module.css"
@@ -25,7 +26,11 @@ export default async function MapPage() {
       {primary.length === 0 ? (
         <p className={styles.empty}>Career map — awaiting content.</p>
       ) : (
-        <MapExplorer primary={primary} lens={lens} />
+        // MapExplorer reads ?node= to deep link, so it needs a Suspense
+        // boundary on this statically rendered page.
+        <Suspense fallback={null}>
+          <MapExplorer primary={primary} lens={lens} />
+        </Suspense>
       )}
     </section>
   )
