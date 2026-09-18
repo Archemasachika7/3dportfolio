@@ -30,9 +30,14 @@ async function loadWithOcct(THREE, buffer, ext) {
   try {
     occt = await occtimportjs({ locateFile: (file) => WASM_DIR + file })
   } catch (cause) {
+    // Developer-facing detail goes to the console; the thrown message is
+    // shown to whoever is using the site, so it stays actionable for them.
+    console.error(
+      `OpenCascade WASM failed to load from ${WASM_DIR}. It is copied there from node_modules by scripts/copy-cad-wasm.mjs on install/build.`,
+      cause
+    )
     throw new Error(
-      "Could not load the OpenCascade engine needed for STEP/IGES files. Run `npm install` to restore public/wasm.",
-      { cause }
+      "The engine that reads STEP and IGES files couldn't be loaded. Try reloading the page, or download the file to open it locally."
     )
   }
 
