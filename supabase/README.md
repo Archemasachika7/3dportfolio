@@ -1,5 +1,11 @@
 # Canonical portfolio schema
 
+> **Starting fresh?** Use [`reset_and_setup.sql`](./reset_and_setup.sql)
+> and follow [`SETUP.md`](./SETUP.md). That one file drops every table
+> and rebuilds the full schema for both the site and the admin, including
+> the admin's tables. The notes below cover the original step-by-step
+> migrations.
+
 This directory is the source of truth for the Supabase schema shared by
 the public portfolio (`3dportfolio`) and the future admin app (repo not
 yet created). Both must read/write these same tables, field names, and
