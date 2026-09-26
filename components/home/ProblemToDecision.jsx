@@ -139,6 +139,7 @@ export default function ProblemToDecision({ media }) {
         <MotionMedia
           media={media?.methodology}
           fallbackSrc="/images/methodology/ideas-models-impact.png"
+          paper
           className={styles.backdropImg}
         />
       </div>

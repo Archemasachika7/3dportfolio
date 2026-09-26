@@ -5,6 +5,8 @@
    ========================================================================== */
 
 :root {
+  color-scheme: light;
+
   /* ---- colour ---- */
   --bg: #f5f4f0;
   --bg-raised: #ffffff;
@@ -65,22 +67,10 @@
   --nav-h: 50px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #0a0a0b;
-    --bg-raised: #111214;
-    --ink: #f2f1ed;
-    --ink-muted: #9b9da3;
-    --ink-faint: #6a6d73;
-    --line: rgba(242, 241, 237, 0.14);
-    --line-strong: rgba(242, 241, 237, 0.32);
-    --accent: #e2662f;
-    --accent-quiet: rgba(226, 102, 47, 0.16);
-    --grid: rgba(242, 241, 237, 0.06);
-  }
-}
-
+/* Light (the paper sheet) is the default for everyone, whatever the OS
+   setting; dark is opt-in from the nav toggle (lib/theme.js). */
 :root[data-theme="dark"] {
+  color-scheme: dark;
   --bg: #0a0a0b;
   --bg-raised: #111214;
   --ink: #f2f1ed;
@@ -283,4 +273,30 @@ html.cursor-enabled canvas {
 
 html.cursor-enabled canvas:active {
   cursor: grabbing !important;
+}
+
+/* ==========================================================================
+   THEME SWITCH
+   The new theme is laid over the old like a fresh sheet, wiped in from the
+   top (see components/ThemeToggle). Browsers without View Transitions, and
+   reduced-motion visitors, just switch.
+   ========================================================================== */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Dark theme imagery. The site's own line drawings are printed on white and
+   would glare as white panels, so they're shown as a negative — a
+   blueprint. Everything else (uploads, photos, project covers) is only
+   dimmed a touch so it sits in the dark page without shouting. */
+:root[data-theme="dark"] img[data-paper] {
+  filter: invert(0.92) hue-rotate(180deg);
+}
+
+:root[data-theme="dark"] main img:not([data-paper]),
+:root[data-theme="dark"] main video {
+  filter: brightness(0.88);
 }

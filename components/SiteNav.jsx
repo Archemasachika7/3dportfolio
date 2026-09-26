@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
+import ThemeToggle from "./ThemeToggle"
 import styles from "./SiteNav.module.css"
 
 const NAV_LINKS = [
@@ -73,7 +74,10 @@ export default function SiteNav() {
         ))}
       </nav>
 
-      {isHome ? <SectionIndicator /> : <span className={`label ${styles.status}`}>SYSTEM / ONLINE</span>}
+      <div className={styles.end}>
+        {isHome ? <SectionIndicator /> : <span className={`label ${styles.status}`}>SYSTEM / ONLINE</span>}
+        <ThemeToggle />
+      </div>
     </header>
   )
 }

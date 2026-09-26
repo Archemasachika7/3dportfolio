@@ -35,19 +35,39 @@
 .visualImg {
   object-fit: cover;
   object-position: center;
-  opacity: 0.12;
+  opacity: 0.16;
 }
 
 @media (min-width: 961px) {
+  /* Fades in from under the name, and out before the title block, so the
+     drawing never runs behind text it would compete with. */
   .visual {
     left: 44%;
     opacity: 1;
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 26%);
-    mask-image: linear-gradient(to right, transparent, #000 26%);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 26%),
+      linear-gradient(to bottom, #000 74%, transparent 88%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent, #000 26%),
+      linear-gradient(to bottom, #000 74%, transparent 88%);
+    mask-composite: intersect;
   }
   .visual .visualImg {
     object-position: left center;
     opacity: 1;
+  }
+}
+
+/* Live scale readout for the drawing, tucked under the file tag. */
+.readout {
+  top: calc(var(--sp-3) * 2 + 18px);
+  right: calc(var(--spine-x) - 8px);
+  padding: 4px 8px;
+  background: var(--bg); /* a label plate, legible over any part of the drawing */
+}
+
+@media (max-width: 960px) {
+  .readout {
+    display: none;
   }
 }
 
@@ -167,6 +187,40 @@
   height: 10px;
   border-right: var(--line-thickness-strong) solid var(--accent);
   border-bottom: var(--line-thickness-strong) solid var(--accent);
+}
+
+/* ---- greeting ---- */
+
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.greetingNode {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.greetingMask {
+  display: inline-flex;
+  overflow: clip;
+  padding-bottom: 0.12em;
+  margin-bottom: -0.12em;
+}
+
+.greetingWord {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .name {

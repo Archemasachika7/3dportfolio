@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 import { loadModel } from "./loadModel"
 import { SUPPORTED_SUMMARY } from "./formats"
+import { onThemeChange, readToken } from "../../lib/theme"
 import styles from "./CadViewer.module.css"
 
 /**
@@ -40,7 +41,6 @@ export default function CadViewer({ url, file, name, active = true, onClose }) {
       if (disposed) return
 
       const scene = new THREE.Scene()
-      scene.background = new THREE.Color(0xf5f4f0) // --bg, so the viewer sits on the page rather than punching a hole in it
 
       const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 10000)
       camera.position.set(90, 70, 110)
@@ -67,12 +67,30 @@ export default function CadViewer({ url, file, name, active = true, onClose }) {
       fill.position.set(-1.2, 0.4, -0.8)
       scene.add(fill)
 
-      const grid = new THREE.GridHelper(400, 40, 0x0b0c0e, 0xc9c8c3)
-      grid.material.opacity = 0.32
-      grid.material.transparent = true
-      scene.add(grid)
+      Object.assign(ctx, { THREE, scene, camera, renderer, controls, grid: null, mount, model: null })
 
-      Object.assign(ctx, { THREE, scene, camera, renderer, controls, grid, mount, model: null })
+      // Background and grid come from the page's theme tokens, so the viewer
+      // sits on the sheet rather than punching a hole in it — in either theme.
+      const applyTheme = () => {
+        const bg = new THREE.Color(readToken("--bg") || "#f5f4f0")
+        const ink = new THREE.Color(readToken("--ink") || "#0b0c0e")
+        scene.background = bg
+        const grid = new THREE.GridHelper(400, 40, ink, bg.clone().lerp(ink, 0.22))
+        grid.material.opacity = 0.32
+        grid.material.transparent = true
+        const old = ctx.grid
+        if (old) {
+          grid.position.copy(old.position)
+          grid.scale.copy(old.scale)
+          scene.remove(old)
+          old.geometry.dispose()
+          old.material.dispose()
+        }
+        scene.add(grid)
+        ctx.grid = grid
+      }
+      applyTheme()
+      ctx.unsubscribeTheme = onThemeChange(applyTheme)
 
       const resize = () => {
         if (!mount.clientWidth || !mount.clientHeight) return
@@ -109,6 +127,7 @@ export default function CadViewer({ url, file, name, active = true, onClose }) {
       const ctx = ctxRef.current
       if (!ctx) return
       ctx.stop?.()
+      ctx.unsubscribeTheme?.()
       ctx.observer?.disconnect()
       ctx.io?.disconnect()
       ctx.controls?.dispose()

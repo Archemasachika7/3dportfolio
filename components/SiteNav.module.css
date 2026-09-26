@@ -41,8 +41,14 @@
   color: var(--ink);
 }
 
-.status {
+.end {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.status {
   white-space: nowrap;
 }
 
@@ -56,5 +62,13 @@
   }
   .status {
     display: none;
+  }
+  /* The mark and toggle share the first row; links wrap beneath. */
+  .end {
+    order: 1;
+  }
+  .links {
+    order: 2;
+    width: 100%;
   }
 }

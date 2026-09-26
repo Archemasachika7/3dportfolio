@@ -240,6 +240,7 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
             media={media?.domains}
             fallbackSrc="/images/domains/one-foundation-four-domains.png"
             sizes="(min-width: 1180px) 1084px, 100vw"
+            paper
             className={styles.atmosphereImg}
           />
         </span>
