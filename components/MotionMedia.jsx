@@ -23,7 +23,8 @@ export default function MotionMedia({
   alt = "",
   loop = true,
   className = "",
-  priority = false
+  priority = false,
+  sizes = "100vw"
 }) {
   const containerRef = useRef(null)
   const videoRef = useRef(null)
@@ -86,7 +87,7 @@ export default function MotionMedia({
           fill
           priority={priority}
           loading={priority ? undefined : "lazy"}
-          sizes="100vw"
+          sizes={sizes}
           className={`${styles.media} ${className}`}
         />
       )}

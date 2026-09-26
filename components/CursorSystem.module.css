@@ -1,4 +1,4 @@
-.wrap {
+.cursor {
   position: fixed;
   inset: 0;
   z-index: 9999;
@@ -7,17 +7,23 @@
   transition: opacity var(--t-small) var(--ease-out);
 }
 
-:global(body.cursor-enabled) .wrap {
+.cursor[data-visible="true"] {
   opacity: 1;
 }
 
+.cursor[data-state="native"] {
+  opacity: 0;
+}
+
+/* Every part is positioned by transform from 0,0 and centred on its own
+   box, so the loop only ever writes translate3d. */
+
 .dot {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 4px;
-  margin: -2px;
+  top: -2.5px;
+  left: -2.5px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--accent);
   will-change: transform;
@@ -27,42 +33,91 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 28px;
-  height: 28px;
-  margin: -14px;
-  border-radius: 50%;
-  border: 1px solid var(--line-strong);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   will-change: transform;
-  transition: width var(--t-micro) var(--ease-out),
-    height var(--t-micro) var(--ease-out),
-    margin var(--t-micro) var(--ease-out),
+}
+
+/* Size changes are scale on this inner shape; the label is its sibling so
+   the type never scales with it. */
+.ringShape {
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: var(--line-thickness) solid var(--line-strong);
+  transition:
+    transform var(--t-small) var(--ease-out),
     border-color var(--t-micro) var(--ease-out),
-    background var(--t-micro) var(--ease-out);
+    background-color var(--t-micro) var(--ease-out);
 }
 
-.ring[data-state="interactive"],
-.ring[data-state="node"] {
-  width: 40px;
-  height: 40px;
-  margin: -20px;
+.cursor[data-state="interactive"] .ringShape {
+  transform: scale(1.5);
   border-color: var(--accent);
 }
 
-.ring[data-state="project"] {
-  width: 64px;
-  height: 64px;
-  margin: -32px;
+.cursor[data-state="project"] .ringShape {
+  transform: scale(2.9);
   border-color: var(--accent);
-  background: var(--bg-raised);
+  background-color: var(--bg);
 }
 
-.ringLabel {
+.cursor[data-state="node"] .ringShape {
+  transform: scale(1.3);
+  border-color: var(--accent);
+}
+
+.cursor[data-pressed="true"] .ringShape {
+  transform: scale(0.8);
+}
+
+.cursor[data-pressed="true"][data-state="project"] .ringShape {
+  transform: scale(2.6);
+}
+
+.label {
+  position: absolute;
+  top: 0;
+  left: 0;
   font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--accent);
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity var(--t-micro) var(--ease-out);
+}
+
+.cursor[data-state="project"] .label {
+  opacity: 1;
+  transition-delay: 80ms;
+}
+
+/* Node labels sit beside the ring, like an annotation on a drawing. */
+.cursor[data-state="node"] .label {
+  opacity: 1;
+  transform: translate(24px, -50%);
+  color: var(--ink);
+}
+
+/* 1px long; scaleX sets its length in pixels. */
+.link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: var(--line-thickness);
+  background: var(--accent);
+  transform-origin: 0 50%;
+  opacity: 0;
+  transition: opacity var(--t-micro) var(--ease-out);
+  will-change: transform;
+}
+
+.cursor[data-state="node"] .link {
+  opacity: 0.7;
 }

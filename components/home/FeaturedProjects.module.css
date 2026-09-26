@@ -4,20 +4,6 @@
   padding: var(--sp-8) var(--spine-x);
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-6);
-}
-
-.heading {
-  margin: 0;
-  font-size: var(--fs-3);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
 .empty {
   font-family: var(--font-mono);
   font-size: var(--fs-00);
@@ -26,13 +12,106 @@
   border-top: var(--line-thickness) solid var(--line);
 }
 
+.list > * + * {
+  border-top: var(--line-thickness) solid var(--line);
+}
+
+/* ---- reel bar (desktop): sticks under the nav while the list is in view ---- */
+
+.reel {
+  display: none;
+}
+
+@media (min-width: 961px) {
+  .reel {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    height: 40px;
+    margin: 0 calc(var(--spine-x) * -1) -40px;
+    padding: 0 var(--spine-x);
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-size: var(--fs-000);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    visibility: hidden;
+  }
+}
+
+.reelLabel {
+  color: var(--ink-faint);
+}
+
+.reelMask {
+  display: inline-flex;
+  overflow: clip;
+}
+
+.reelIndex {
+  display: inline-block;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.reelTotal {
+  color: var(--ink-faint);
+  margin-right: var(--sp-3);
+}
+
+.reelTitleMask {
+  flex: 1;
+  min-width: 0;
+}
+
+.reelTitle {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+.reelTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--line-thickness);
+  background: var(--line);
+}
+
+.reelProgress {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform-origin: left center;
+}
+
+/* ---- bridge: full-bleed image that opens out of a framed plate ---- */
+
 .bridge {
   position: relative;
-  aspect-ratio: 21 / 9;
-  width: 100%;
-  margin-top: var(--sp-7);
-  border: var(--line-thickness) solid var(--line);
+  width: 100vw;
+  margin: var(--sp-7) 0 0 calc(50% - 50vw);
+  height: min(88vh, 900px);
+}
+
+.bridgeFrame {
+  position: absolute;
+  inset: 0;
   overflow: hidden;
+}
+
+.bridgeMedia {
+  position: absolute;
+  inset: 0;
+  display: block;
+  will-change: transform;
 }
 
 .bridgeImg {
@@ -45,24 +124,24 @@
   right: 0;
   bottom: 0;
   z-index: 1;
-  padding: var(--sp-3) var(--sp-4);
+  padding: var(--sp-5) var(--spine-x) var(--sp-4);
   background: linear-gradient(to top, rgba(11, 12, 14, 0.6), transparent);
   color: #f5f4f0;
   font-family: var(--font-mono);
   font-size: var(--fs-000);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 @media (max-width: 960px) {
   .bridge {
-    aspect-ratio: 16 / 9;
+    height: 64vh;
   }
 }
 
 @media (max-width: 640px) {
   .bridge {
-    aspect-ratio: 4 / 5;
+    height: 72vh;
   }
 }
 
@@ -79,15 +158,12 @@
   font-size: var(--fs-00);
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  text-decoration: none;
   color: var(--ink);
   padding-bottom: 2px;
-  border-bottom: var(--line-thickness-strong) solid var(--ink);
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-micro) var(--ease-out);
 }
 
-.allLink:hover {
+.allLink:hover,
+.allLink:focus-visible {
   color: var(--accent);
-  border-color: var(--accent);
 }

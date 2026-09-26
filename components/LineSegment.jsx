@@ -1,14 +1,9 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
-import useReducedMotion from "../hooks/useReducedMotion"
+import { useRef } from "react"
+import useMotion, { setScope } from "../hooks/useMotion"
+import { gsap } from "../lib/motion"
 import styles from "./LineSegment.module.css"
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger)
-}
 
 /**
  * A single stretch of the career line. It "draws" itself in — scaling
@@ -25,38 +20,22 @@ export default function LineSegment({
 }) {
   const wrapRef = useRef(null)
   const lineRef = useRef(null)
-  const reduced = useReducedMotion()
 
-  useEffect(() => {
-    const wrap = wrapRef.current
-    const line = lineRef.current
-    if (!wrap || !line) return
-
-    const prop = orientation === "vertical" ? "scaleY" : "scaleX"
-
-    if (reduced) {
-      gsap.set(line, { [prop]: 1 })
-      return
-    }
-
-    gsap.set(line, { [prop]: 0 })
-
-    const tween = gsap.to(line, {
-      [prop]: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: wrap,
-        start,
-        end,
-        scrub
-      }
-    })
-
-    return () => {
-      tween.scrollTrigger?.kill()
-      tween.kill()
-    }
-  }, [orientation, start, end, scrub, reduced])
+  useMotion(
+    wrapRef,
+    ({ reduce }) => {
+      if (reduce) return setScope(wrapRef.current, "static")
+      const prop = orientation === "vertical" ? "scaleY" : "scaleX"
+      gsap.set(lineRef.current, { [prop]: 0, autoAlpha: 1 })
+      setScope(wrapRef.current, "live")
+      gsap.to(lineRef.current, {
+        [prop]: 1,
+        ease: "none",
+        scrollTrigger: { trigger: wrapRef.current, start, end, scrub }
+      })
+    },
+    [orientation, start, end, scrub]
+  )
 
   return (
     <div
@@ -64,8 +43,9 @@ export default function LineSegment({
       className={`${styles.wrap} ${
         orientation === "vertical" ? styles.vertical : styles.horizontal
       } ${className}`}
+      data-motion-scope="pending"
     >
-      <div ref={lineRef} className={styles.line} />
+      <div ref={lineRef} className={styles.line} data-reveal />
     </div>
   )
 }

@@ -47,7 +47,7 @@ export default function TimelineNode({ label, meta, children, align = "left" }) 
       data-cursor="node"
       data-cursor-label={label}
     >
-      <span className={styles.marker} />
+      <span className={styles.marker} data-cursor-anchor />
       <div className={styles.body}>
         <span className={`label ${styles.label}`}>{label}</span>
         {meta && <span className={styles.meta}>{meta}</span>}

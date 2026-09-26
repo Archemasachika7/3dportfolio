@@ -1,0 +1,124 @@
+.transition {
+  position: relative;
+  height: 34vh;
+  min-height: 200px;
+  max-height: 360px;
+  pointer-events: none;
+}
+
+.line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: var(--line-thickness);
+  background: var(--line-strong);
+  transform-origin: left center;
+}
+
+.tick {
+  position: absolute;
+  top: calc(50% - 5px);
+  width: var(--line-thickness);
+  height: 11px;
+  background: var(--line-strong);
+}
+
+.tick[data-side="start"] {
+  left: var(--spine-x);
+}
+
+.tick[data-side="end"] {
+  right: var(--spine-x);
+}
+
+/* The leading edge: node plus its live coordinate. */
+.head {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  will-change: transform;
+}
+
+.headDot {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.readout {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  margin: -5.5px 0 0 -5.5px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: var(--line-thickness-strong) solid var(--accent);
+}
+
+/* Continues into the next section's trunk. */
+.drop {
+  position: absolute;
+  top: calc(50% + 6px);
+  bottom: 0;
+  left: calc(50% - var(--line-thickness-strong) / 2);
+  width: var(--line-thickness-strong);
+  background: var(--ink);
+  transform-origin: center top;
+}
+
+.caption {
+  position: absolute;
+  top: calc(50% + var(--sp-3));
+  left: calc(50% + var(--sp-3));
+  display: flex;
+  gap: var(--sp-2);
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.arrow {
+  color: var(--accent);
+}
+
+@media (max-width: 720px) {
+  .transition {
+    height: 22vh;
+    min-height: 150px;
+  }
+  /* Stacked in the left gutter, clear of the centre drop. */
+  .caption {
+    left: var(--spine-x);
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+/* Drawn and still: the head has nowhere to travel. */
+@media (prefers-reduced-motion: reduce) {
+  .head {
+    display: none;
+  }
+}

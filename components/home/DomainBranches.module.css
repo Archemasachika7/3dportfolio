@@ -2,80 +2,236 @@
   position: relative;
   max-width: var(--content-max);
   margin: 0 auto;
-  padding: var(--sp-8) var(--spine-x) var(--sp-7);
-}
-
-.intro {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  text-align: center;
-  margin-bottom: var(--sp-6);
-}
-
-.heading {
-  margin: 0;
-  font-size: var(--fs-3);
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  /* Shallow top: the transition band's drop leads straight into the header. */
+  padding: var(--sp-6) var(--spine-x) var(--sp-7);
 }
 
 .atmosphere {
   position: relative;
   aspect-ratio: 21 / 9;
   width: 100%;
-  margin-bottom: var(--sp-6);
   border: var(--line-thickness) solid var(--line);
   overflow: hidden;
+}
+
+.atmosphereInner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  will-change: transform;
 }
 
 .atmosphereImg {
   object-fit: cover;
 }
 
-.trunk {
-  height: 56px;
-  width: var(--line-thickness-strong);
-  margin: 0 auto;
+.empty {
+  margin-top: var(--sp-6);
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  color: var(--ink-faint);
+  text-align: center;
 }
 
-.crossbar {
+/* ---- the diagram ---- */
+
+.diagram {
+  position: relative;
+  padding-top: var(--sp-5);
+}
+
+.origin {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.originNode {
   display: block;
-  height: var(--line-thickness);
-  width: min(100%, 900px);
-  margin: 0 auto var(--sp-6);
-  background: var(--line-strong);
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--ink);
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 5px var(--line-strong);
+}
+
+.originLabel {
+  position: absolute;
+  left: calc(50% + var(--sp-4));
+  top: 50%;
+  translate: 0 -50%;
+  white-space: nowrap;
+}
+
+.trunk {
+  display: block;
+  width: var(--line-thickness-strong);
+  height: 64px;
+  margin: 0 auto;
+  background: var(--ink);
+  transform-origin: center top;
+  transition: background-color var(--t-small) var(--ease-out);
+}
+
+.section[data-active="true"] .trunk {
+  background: var(--accent);
 }
 
 .grid {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-4);
+  gap: var(--sp-6) var(--sp-4);
+  padding-top: var(--sp-6);
 }
+
+/* Bus halves: geometry set from measurement; each grows out of the trunk. */
+.bus {
+  position: absolute;
+  top: 0;
+  height: var(--line-thickness-strong);
+  background: var(--ink);
+}
+
+.bus[data-bus="left"] {
+  transform-origin: right center;
+}
+
+.bus[data-bus="right"] {
+  transform-origin: left center;
+}
+
+/* Lit path along the bus, trunk → active branch. 1px wide; a signed
+   scaleX sets its length and direction. */
+.glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: var(--line-thickness-strong);
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  z-index: 1;
+}
+
+.pulse {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0;
+  visibility: hidden;
+  z-index: 2;
+}
+
+/* ---- a branch ---- */
 
 .branch {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--sp-2);
-  padding: var(--sp-4) var(--sp-3) var(--sp-5);
-  border-top: var(--line-thickness-strong) solid var(--ink);
-  transition: opacity var(--t-medium) var(--ease-out),
-    border-color var(--t-small) var(--ease-out);
+  display: block;
   outline: none;
   text-decoration: none;
   color: inherit;
 }
 
-.branch:hover,
-.branch:focus-visible {
-  border-top-color: var(--accent);
-}
-
 .branch:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 4px;
+  outline-offset: 6px;
+}
+
+.drop {
+  position: absolute;
+  left: 0;
+  top: calc(var(--sp-6) * -1);
+  width: var(--line-thickness-strong);
+  height: var(--sp-6);
+  margin-left: calc(var(--line-thickness-strong) / -2);
+  background: var(--ink);
+  transform-origin: center top;
+  transition: background-color var(--t-small) var(--ease-out);
+}
+
+.branch[data-connected="false"] .drop {
+  display: none;
+}
+
+.branch[data-state="active"] .drop {
+  background: var(--accent);
+}
+
+.node {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: var(--line-thickness-strong) solid var(--ink);
+  transition: background-color var(--t-small) var(--ease-out),
+    border-color var(--t-small) var(--ease-out);
+}
+
+.branch[data-state="active"] .node {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding: var(--sp-4) 0 var(--sp-2) var(--sp-3);
+  transition: opacity var(--t-medium) var(--ease-out);
+}
+
+.branch[data-state="dim"] .body {
+  opacity: 0.4;
+}
+
+.branchVisual {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border: var(--line-thickness) solid var(--line);
+}
+
+.branchVisualImg {
+  object-fit: cover;
+  opacity: 0.72;
+  transform: scale(1.001);
+  transition: opacity var(--t-medium) var(--ease-out),
+    transform var(--t-large) var(--ease-out);
+}
+
+.branch[data-state="active"] .branchVisualImg {
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.branchLabel {
+  color: var(--ink);
+  transition: color var(--t-small) var(--ease-out);
+}
+
+.branch[data-state="active"] .branchLabel {
+  color: var(--accent);
+}
+
+.summary {
+  margin: 0;
+  color: var(--ink-muted);
+  font-size: var(--fs-00);
+  max-width: 30ch;
 }
 
 /* Affordance that these open the matching resume — revealed on hover so
@@ -87,15 +243,51 @@
   letter-spacing: 0.1em;
   color: var(--accent);
   opacity: 0;
-  transform: translateY(-2px);
+  transform: translateX(-4px);
   transition: opacity var(--t-small) var(--ease-out),
     transform var(--t-small) var(--ease-out);
 }
 
-.branch:hover .cue,
+.branch[data-state="active"] .cue,
 .branch:focus-visible .cue {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateX(0);
+}
+
+/* ---- smaller screens: no bus; each domain keeps its own node on a rail ---- */
+
+@media (max-width: 960px) {
+  .origin,
+  .trunk,
+  .bus,
+  .glow,
+  .pulse,
+  .drop {
+    display: none;
+  }
+  .diagram {
+    padding-top: var(--sp-6);
+  }
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--sp-5) var(--sp-4);
+    padding-top: 0;
+  }
+  .body {
+    border-top: var(--line-thickness) solid var(--line-strong);
+  }
+  .atmosphere {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .atmosphere {
+    aspect-ratio: 4 / 5;
+  }
 }
 
 @media (hover: none) {
@@ -106,81 +298,12 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cue {
+  .cue,
+  .branchVisualImg {
     transition: opacity var(--t-micro) linear;
     transform: none;
   }
-}
-
-.stub {
-  position: absolute;
-  top: calc(-1 * var(--sp-6));
-  left: 0;
-  width: var(--line-thickness);
-  height: var(--sp-6);
-  background: var(--line-strong);
-}
-
-.branchVisual {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border: var(--line-thickness) solid var(--line);
-}
-
-.branchVisualImg {
-  object-fit: cover;
-  opacity: 0.7;
-  transition: opacity var(--t-medium) var(--ease-out);
-}
-
-.branch:hover .branchVisualImg,
-.branch:focus-visible .branchVisualImg {
-  opacity: 1;
-}
-
-.summary {
-  margin: 0;
-  color: var(--ink-muted);
-  font-size: var(--fs-00);
-  max-width: 30ch;
-}
-
-.empty {
-  font-family: var(--font-mono);
-  font-size: var(--fs-00);
-  color: var(--ink-faint);
-  text-align: center;
-}
-
-.branch[data-dim="true"] {
-  opacity: 0.4;
-}
-
-@media (max-width: 960px) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 960px) {
-  .atmosphere {
-    aspect-ratio: 16 / 9;
-  }
-}
-
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-  .heading {
-    font-size: var(--fs-2);
-  }
-  .stub {
-    display: none;
-  }
-  .atmosphere {
-    aspect-ratio: 4 / 5;
+  .branch[data-state="active"] .branchVisualImg {
+    transform: none;
   }
 }

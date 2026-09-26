@@ -43,6 +43,7 @@
   height: 100%;
   background: var(--line-strong);
   align-self: flex-end;
+  transform-origin: center top;
 }
 
 .crossbar {
@@ -58,13 +59,42 @@
   height: 48px;
   background: var(--ink);
   margin-bottom: var(--sp-4);
+  transform-origin: center top;
 }
 
 .statement {
   margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 0.3em;
   font-size: clamp(1.75rem, 5vw, var(--fs-4));
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.group {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.wordMask {
+  display: inline-block;
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.word {
+  display: inline-block;
+}
+
+.arrow {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 400;
 }
 
 .links {
@@ -79,17 +109,18 @@
   font-family: var(--font-mono);
   font-size: var(--fs-00);
   letter-spacing: 0.1em;
-  text-decoration: none;
   color: var(--ink-muted);
   padding-bottom: 2px;
-  border-bottom: var(--line-thickness) solid transparent;
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-micro) var(--ease-out);
 }
 
-.link:hover {
+.link:hover,
+.link:focus-visible {
   color: var(--ink);
-  border-color: var(--accent);
+}
+
+.link::after {
+  background: var(--accent);
 }
 
 .signature {

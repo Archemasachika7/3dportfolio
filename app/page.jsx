@@ -3,6 +3,7 @@ import EducationSection from "../components/home/EducationSection"
 import DomainBranches from "../components/home/DomainBranches"
 import ProblemToDecision from "../components/home/ProblemToDecision"
 import FeaturedProjects from "../components/home/FeaturedProjects"
+import SectionTransition from "../components/motion/SectionTransition"
 import ClosingSection from "../components/home/ClosingSection"
 import {
   getProfile,
@@ -27,8 +28,9 @@ export default async function Home() {
 
   return (
     <>
-      <IntroSequence profile={profile} media={media} />
+      <IntroSequence profile={profile} media={media} domains={domainNodes.primary} />
       <EducationSection education={education} />
+      <SectionTransition from="Foundation" to="Application" />
       <DomainBranches domainNodes={domainNodes.primary} media={media} />
       <ProblemToDecision media={media} />
       <FeaturedProjects projects={featuredProjects} media={media} />
