@@ -1,0 +1,75 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color var(--t-micro) var(--ease-out);
+}
+
+.toggle:hover,
+.toggle:focus-visible {
+  color: var(--ink);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+/* A hairline slot with a square slider: the switch on a drawing sheet. */
+.track {
+  position: relative;
+  width: 24px;
+  height: 10px;
+  border: var(--line-thickness) solid currentColor;
+  border-radius: var(--radius);
+}
+
+.knob {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  transition: transform var(--t-small) var(--ease-cinematic);
+}
+
+:global(:root[data-theme="dark"]) .knob {
+  transform: translateX(14px);
+}
+
+/* Both labels render; CSS shows the current one, so SSR is never wrong. */
+.label {
+  display: inline-grid;
+}
+
+.light,
+.dark {
+  grid-area: 1 / 1;
+}
+
+.dark {
+  visibility: hidden;
+}
+
+:global(:root[data-theme="dark"]) .light {
+  visibility: hidden;
+}
+
+:global(:root[data-theme="dark"]) .dark {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .knob {
+    transition: none;
+  }
+}

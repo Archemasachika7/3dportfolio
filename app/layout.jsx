@@ -5,6 +5,7 @@ import CursorSystem from "../components/CursorSystem"
 import CoordinateField from "../components/CoordinateField"
 import SiteNav from "../components/SiteNav"
 import SiteFooter from "../components/SiteFooter"
+import { THEME_BOOT } from "../lib/theme"
 
 // Runs during HTML parsing, before first paint: marks the page as
 // JS-capable so the CSS motion gate can hold reveal targets hidden without
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
           name="description"
           content="Engineer, data scientist and builder — a technical portfolio spanning structural engineering, data science and business."
         />
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT }} />
         <script dangerouslySetInnerHTML={{ __html: MOTION_BOOT }} />
       </head>
       <body>

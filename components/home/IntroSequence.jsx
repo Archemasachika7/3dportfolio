@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import MotionMedia from "../MotionMedia"
+import StructuralZoom from "../hero/StructuralZoom"
 import Cta from "../motion/Cta"
 import { fieldState } from "../CoordinateField"
 import useMotion, { setScope } from "../../hooks/useMotion"
@@ -47,6 +47,10 @@ function TitleBlock({ cells }) {
   )
 }
 
+// The greeting flickers through languages while the grid comes up, then
+// settles on the line that introduces the name. The last entry stays.
+const GREETINGS = ["Hello", "নমস্কার", "नमस्ते", "Bonjour", "Hola", "Ciao", "こんにちは", "Hello, I'm"]
+
 /** Four L-shaped crop marks framing the sheet, like a print proof. */
 function CropMarks() {
   return (
@@ -58,8 +62,9 @@ function CropMarks() {
   )
 }
 
-export default function IntroSequence({ profile, media, domains = [] }) {
+export default function IntroSequence({ profile, domains = [] }) {
   const ref = useRef(null)
+  const zoomRef = useRef(null)
 
   const name = profile?.name || identity.name
   const words = name.trim().split(/\s+/)
@@ -116,7 +121,10 @@ export default function IntroSequence({ profile, media, domains = [] }) {
       gsap.set(q("[data-cell]"), { autoAlpha: 1 })
       gsap.set(q("[data-cell] dt"), { autoAlpha: 0 })
       gsap.set(q("[data-cell-value]"), { yPercent: 110 })
-      gsap.set(q("[data-visual]"), { autoAlpha: 0, scale: 1.07 })
+      gsap.set(q("[data-visual]"), { autoAlpha: 0, scale: 1.04 })
+      gsap.set(q("[data-greeting]"), { autoAlpha: 1 })
+      gsap.set(q("[data-greeting-node]"), { scale: 0 })
+      gsap.set(q("[data-greeting-word]"), { yPercent: 110 })
       gsap.set(q("[data-word]"), {
         yPercent: 112,
         x: mobile ? 16 : 44,
@@ -147,13 +155,33 @@ export default function IntroSequence({ profile, media, domains = [] }) {
         .to(q("[data-crop]"), { scale: 1, duration: 0.5, stagger: 0.07, ease: "back.out(2)" }, 0.5)
         .to(q("[data-annot]"), { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1 }, 0.7)
 
+      // 01 → 02 — hello, in a few languages, while the field comes up
+      const greetWord = q("[data-greeting-word]")[0]
+      const G = mobile ? 0.11 : 0.13
+      intro.to(q("[data-greeting-node]"), { scale: 1, duration: 0.3, ease: "back.out(2.4)" }, 0.2)
+      GREETINGS.forEach((word, i) => {
+        const at = 0.3 + i * G * T
+        intro
+          .call(() => greetWord && (greetWord.textContent = word), null, at)
+          .fromTo(
+            greetWord,
+            { yPercent: 110 },
+            { yPercent: 0, duration: i === GREETINGS.length - 1 ? 0.6 : 0.1, ease: EASE.out, immediateRender: false },
+            at
+          )
+      })
+
+      // The drawing begins to draw itself as the sheet assembles.
+      intro.call(() => zoomRef.current?.start(), null, 0.9 * T)
+
       // 03 — the title block
+      intro
         .to(q("[data-title-rule]"), { scaleX: 1, duration: 0.9 * T, ease: EASE.cinematic }, 0.85)
         .to(q("[data-cell] dt"), { autoAlpha: 1, duration: 0.4, stagger: 0.08 }, 1.0)
         .to(q("[data-cell-value]"), { yPercent: 0, duration: 0.8, stagger: 0.08 }, 1.08)
 
       // 04 — the identity
-        .to(q("[data-visual]"), { autoAlpha: 1, scale: 1, duration: 1.8, ease: "power2.out" }, 1.1 * T)
+        .to(q("[data-visual]"), { autoAlpha: 1, scale: 1, duration: 1.4, ease: "power2.out" }, 0.9 * T)
         .to(
           q("[data-word]"),
           {
@@ -259,12 +287,11 @@ export default function IntroSequence({ profile, media, domains = [] }) {
     <section ref={ref} className={styles.hero} aria-label="Introduction" data-motion-scope="pending">
       <div className={styles.visualLayer} data-layer="visual" aria-hidden="true">
         <div className={styles.visual} data-visual data-reveal>
-          <MotionMedia
-            media={media?.hero}
-            fallbackSrc="/images/hero/structural-hero.png"
-            priority
-            sizes="(min-width: 961px) 56vw, 100vw"
-            className={styles.visualImg}
+          <StructuralZoom
+            ref={zoomRef}
+            autoStart={false}
+            svgClassName={styles.visualImg}
+            readoutClassName={styles.readout}
           />
         </div>
       </div>
@@ -289,6 +316,15 @@ export default function IntroSequence({ profile, media, domains = [] }) {
             <span className={styles.portraitTick} aria-hidden="true" />
           </div>
         )}
+
+        <p className={styles.greeting} data-greeting data-reveal>
+          <span className={styles.greetingNode} data-greeting-node aria-hidden="true" />
+          <span className={styles.greetingMask}>
+            <span className={styles.greetingWord} data-greeting-word>
+              {GREETINGS[GREETINGS.length - 1]}
+            </span>
+          </span>
+        </p>
 
         <h1 className={styles.name} data-name data-reveal aria-label={name}>
           {words.map((word, i) => (

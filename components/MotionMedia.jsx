@@ -14,6 +14,9 @@ import styles from "./MotionMedia.module.css"
  * spinner or blank box; it's a real static image the site already
  * ships with.
  *
+ * `paper` marks the local fallback as line art printed on white, which the
+ * dark theme shows as a negative instead of a glaring white panel.
+ *
  * Fills its positioned parent (mirrors next/image's `fill` behaviour) —
  * the parent must be position:relative/absolute with a defined size.
  */
@@ -24,7 +27,8 @@ export default function MotionMedia({
   loop = true,
   className = "",
   priority = false,
-  sizes = "100vw"
+  sizes = "100vw",
+  paper = false
 }) {
   const containerRef = useRef(null)
   const videoRef = useRef(null)
@@ -89,6 +93,9 @@ export default function MotionMedia({
           loading={priority ? undefined : "lazy"}
           sizes={sizes}
           className={`${styles.media} ${className}`}
+          // The site's own line drawings on white: shown as a negative in
+          // the dark theme (globals.css). Never applied to uploaded media.
+          data-paper={paper ? "" : undefined}
         />
       )}
     </div>

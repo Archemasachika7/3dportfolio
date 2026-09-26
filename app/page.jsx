@@ -28,7 +28,7 @@ export default async function Home() {
 
   return (
     <>
-      <IntroSequence profile={profile} media={media} domains={domainNodes.primary} />
+      <IntroSequence profile={profile} domains={domainNodes.primary} />
       <EducationSection education={education} />
       <SectionTransition from="Foundation" to="Application" />
       <DomainBranches domainNodes={domainNodes.primary} media={media} />

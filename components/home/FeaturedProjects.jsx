@@ -135,6 +135,7 @@ export default function FeaturedProjects({ projects = [], media = {} }) {
             <MotionMedia
               media={media?.integrated}
               fallbackSrc="/images/bridge/integrated-solutions.png"
+              paper
               className={styles.bridgeImg}
             />
           </span>
