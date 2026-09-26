@@ -1,0 +1,85 @@
+.cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: 13px 20px 12px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  font-size: var(--fs-00);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  border: var(--line-thickness) solid var(--ink);
+  border-radius: var(--radius);
+  /* Opaque at rest so a CTA placed over media stays legible. */
+  background: var(--bg);
+  isolation: isolate;
+}
+
+.cta[data-variant="ghost"] {
+  border-color: var(--line-strong);
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+  transition: color var(--t-small) var(--ease-cinematic);
+}
+
+/* The wipe. Its transform-origin follows data-from, so it enters from the
+   side the pointer arrived at and retracts toward the side it left. */
+.fill {
+  position: absolute;
+  inset: -1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--t-small) var(--ease-cinematic);
+}
+
+.cta[data-from="right"] .fill {
+  transform-origin: right center;
+}
+
+.cta[data-from="top"] .fill,
+.cta[data-from="bottom"] .fill {
+  transform: scaleY(0);
+}
+
+.cta[data-from="top"] .fill {
+  transform-origin: center top;
+}
+
+.cta[data-from="bottom"] .fill {
+  transform-origin: center bottom;
+}
+
+.cta[data-hover="true"] .fill {
+  transform: scale(1);
+}
+
+.cta[data-hover="true"] .text {
+  color: var(--bg);
+}
+
+.cta:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.cta:focus-visible .fill {
+  transform: scale(1);
+}
+
+.cta:focus-visible .text {
+  color: var(--bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fill,
+  .text {
+    transition: none;
+  }
+}

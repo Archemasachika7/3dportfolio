@@ -11,20 +11,32 @@
   text-align: right;
 }
 
+/* Always the active size; every state is a scale of it, so the marker
+   never animates layout. The halo is a pseudo-element that scales in. */
 .marker {
+  position: relative;
   flex: none;
-  width: var(--node-size);
-  height: var(--node-size);
-  margin-top: 6px;
+  width: var(--node-size-active);
+  height: var(--node-size-active);
+  margin-top: 3px;
   border-radius: 50%;
   background: var(--ink-faint);
-  transform: scale(0.7);
-  transition: background var(--t-medium) var(--ease-out),
-    width var(--t-medium) var(--ease-out),
-    height var(--t-medium) var(--ease-out),
-    transform var(--t-medium) var(--ease-out),
-    box-shadow var(--t-medium) var(--ease-out),
-    margin var(--t-medium) var(--ease-out);
+  transform: scale(0.4);
+  transition: background-color var(--t-medium) var(--ease-out),
+    transform var(--t-medium) var(--ease-out);
+}
+
+.marker::after {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: var(--accent-quiet);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity var(--t-medium) var(--ease-out),
+    transform var(--t-medium) var(--ease-out);
+  z-index: -1;
 }
 
 .body {
@@ -48,7 +60,7 @@
 
 .node[data-state="approaching"] .marker {
   background: var(--line-strong);
-  transform: scale(0.9);
+  transform: scale(0.55);
 }
 .node[data-state="approaching"] .body {
   opacity: 0.6;
@@ -57,11 +69,11 @@
 
 .node[data-state="active"] .marker {
   background: var(--accent);
-  width: var(--node-size-active);
-  height: var(--node-size-active);
-  margin-top: 3px;
   transform: scale(1);
-  box-shadow: 0 0 0 4px var(--accent-quiet);
+}
+.node[data-state="active"] .marker::after {
+  opacity: 1;
+  transform: scale(1);
 }
 .node[data-state="active"] .body {
   opacity: 1;
@@ -70,7 +82,7 @@
 
 .node[data-state="completed"] .marker {
   background: var(--ink-muted);
-  transform: scale(0.85);
+  transform: scale(0.6);
 }
 .node[data-state="completed"] .body {
   opacity: 0.72;
@@ -83,6 +95,10 @@
     transform: none;
   }
   .marker {
+    transform: scale(0.6);
+    transition: none;
+  }
+  .node[data-state="active"] .marker {
     transform: scale(1);
   }
 }

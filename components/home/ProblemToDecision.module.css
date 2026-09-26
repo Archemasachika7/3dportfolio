@@ -1,51 +1,90 @@
 .section {
   position: relative;
-  max-width: var(--content-max);
-  margin: 0 auto;
+  overflow: clip;
   padding: var(--sp-8) var(--spine-x);
+}
+
+@media (min-width: 961px) {
+  /* Pinned: the section is exactly one viewport, content centred in it. */
+  .section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: calc(var(--nav-h) + var(--sp-5));
+    padding-bottom: var(--sp-6);
+  }
 }
 
 .backdrop {
   position: absolute;
   inset: 0;
-  z-index: 0;
-  object-fit: cover;
+  z-index: -2;
   opacity: 0.07;
   pointer-events: none;
 }
 
-.intro {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  text-align: center;
-  margin-bottom: var(--sp-7);
+.backdropImg {
+  object-fit: cover;
 }
 
-.heading {
-  margin: 0;
-  font-size: var(--fs-3);
+/* The giant section number: outline only, so it reads as structure behind
+   the content rather than as a second headline. */
+.numeral {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  font-size: clamp(14rem, 36vw, 32rem);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  line-height: 0.8;
+  letter-spacing: -0.05em;
+  color: transparent;
+  -webkit-text-stroke: var(--line-thickness) var(--line);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform;
+}
+
+.inner {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
 }
 
 .chain {
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: var(--sp-5) 0;
+  margin-top: var(--sp-6);
 }
 
+.steps {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Faint full-length track, with the ink progress line drawn over it. Both
+   pass through the step nodes' centres. */
+.chainTrack,
 .chainLine {
   position: absolute;
   left: 0;
   right: 0;
-  top: 50%;
+  top: 35px; /* index row + gap + half a node */
   height: var(--line-thickness);
-  background: var(--line-strong);
+}
+
+.chainTrack {
+  background: var(--line);
+}
+
+.chainLine {
+  height: var(--line-thickness-strong);
+  margin-top: -0.25px;
+  background: var(--ink);
+  transform-origin: left center;
 }
 
 .step {
@@ -53,55 +92,132 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--sp-2);
-  background: var(--bg);
-  padding: 0 var(--sp-3);
+  gap: var(--sp-3);
+  min-width: 0;
+  will-change: transform;
+}
+
+.step:first-of-type {
+  align-items: flex-start;
+}
+
+.step:last-of-type {
+  align-items: flex-end;
 }
 
 .index {
   font-family: var(--font-mono);
   font-size: var(--fs-000);
+  letter-spacing: 0.14em;
+  line-height: 14px;
   color: var(--ink-faint);
-  transition: color var(--t-medium) var(--ease-out);
-  transition-delay: var(--step-delay, 0ms);
+  transition: color var(--t-small) var(--ease-out);
+}
+
+.stepNode {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: var(--line-thickness-strong) solid var(--line-strong);
+  transition: background-color var(--t-small) var(--ease-out),
+    border-color var(--t-small) var(--ease-out);
 }
 
 .word {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: var(--fs-00);
-  letter-spacing: 0.08em;
-  color: var(--ink-muted);
   font-weight: 500;
-  transition: color var(--t-medium) var(--ease-out), font-size var(--t-medium) var(--ease-out);
-  transition-delay: var(--step-delay, 0ms);
+  letter-spacing: 0.1em;
+  color: var(--ink-muted);
+  transform-origin: center top;
+  transition: color var(--t-small) var(--ease-out),
+    transform var(--t-medium) var(--ease-out);
 }
 
-.step[data-active="true"] .word {
+.step:first-of-type .word {
+  transform-origin: left top;
+}
+
+.step:last-of-type .word {
+  transform-origin: right top;
+}
+
+.step[data-state="done"] .word {
+  color: var(--ink);
+}
+
+.step[data-state="done"] .stepNode {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.step[data-state="current"] .index,
+.step[data-state="current"] .word {
   color: var(--accent);
-  font-size: var(--fs-1);
 }
 
-.step[data-active="true"] .index {
-  color: var(--accent);
+.step[data-state="current"] .word {
+  transform: scale(1.6);
 }
 
-@media (max-width: 720px) {
-  .chain {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--sp-5);
+.step[data-state="current"] .stepNode {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+@media (max-width: 960px) {
+  .numeral {
+    font-size: 58vw;
+    top: 22%;
   }
+  .steps {
+    flex-direction: column;
+    gap: var(--sp-5);
+    padding-left: var(--sp-5);
+  }
+  .chainTrack,
   .chainLine {
-    left: 20px;
+    left: 5px;
     right: auto;
-    top: 0;
-    bottom: 0;
+    top: 6px;
+    bottom: 6px;
     width: var(--line-thickness);
     height: auto;
   }
-  .step {
+  .chainLine {
+    width: var(--line-thickness-strong);
+    margin: 0 0 0 -0.25px;
+    transform-origin: center top;
+  }
+  .step,
+  .step:first-of-type,
+  .step:last-of-type {
     flex-direction: row;
-    padding: 0;
-    padding-left: var(--sp-3);
+    align-items: center;
+    gap: var(--sp-3);
+  }
+  .stepNode {
+    position: absolute;
+    left: calc(var(--sp-5) * -1);
+    top: 50%;
+    margin-top: -5.5px;
+  }
+  .word,
+  .step:first-of-type .word,
+  .step:last-of-type .word {
+    transform-origin: left center;
+  }
+  .step[data-state="current"] .word {
+    transform: scale(1.3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .index,
+  .stepNode,
+  .word {
+    transition: none;
   }
 }

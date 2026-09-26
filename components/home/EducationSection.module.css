@@ -4,30 +4,18 @@
   padding: var(--sp-8) var(--spine-x);
 }
 
-.intro {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sp-2);
-  margin-bottom: var(--sp-7);
-}
-
 .empty {
   font-family: var(--font-mono);
   font-size: var(--fs-00);
   color: var(--ink-faint);
 }
 
-.heading {
-  margin: 0;
-  font-size: var(--fs-3);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
 .timeline {
+  --rail-w: var(--spine-x);
+  --rail-gap: var(--sp-5);
   display: grid;
-  grid-template-columns: var(--spine-x) 1fr;
-  gap: var(--sp-5);
+  grid-template-columns: var(--rail-w) 1fr;
+  gap: var(--rail-gap);
 }
 
 .rail {
@@ -39,6 +27,21 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-6);
+}
+
+.item {
+  position: relative;
+}
+
+/* Tick from the rail to the entry's node — drawn out of the rail. */
+.connector {
+  position: absolute;
+  top: 18px; /* node padding + marker centre */
+  left: calc((var(--rail-gap) + var(--rail-w) / 2) * -1);
+  width: calc(var(--rail-gap) + var(--rail-w) / 2 - 2px);
+  height: var(--line-thickness);
+  background: var(--line-strong);
+  transform-origin: left center;
 }
 
 .institution {
@@ -75,11 +78,8 @@
 
 @media (max-width: 720px) {
   .timeline {
-    grid-template-columns: 24px 1fr;
-    gap: var(--sp-3);
-  }
-  .heading {
-    font-size: var(--fs-2);
+    --rail-w: 24px;
+    --rail-gap: var(--sp-3);
   }
   .institution {
     font-size: var(--fs-1);

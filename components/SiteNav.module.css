@@ -6,8 +6,10 @@
   align-items: center;
   gap: var(--sp-6);
   padding: var(--sp-3) var(--spine-x);
-  background: color-mix(in srgb, var(--bg) 88%, transparent);
-  backdrop-filter: blur(6px);
+  /* Near-opaque instead of blurred: backdrop-filter on a sticky bar
+     re-blurs everything scrolling beneath it every frame, which competes
+     directly with the scroll-linked motion below. */
+  background: color-mix(in srgb, var(--bg) 96%, transparent);
   border-bottom: var(--line-thickness) solid var(--line);
 }
 

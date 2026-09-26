@@ -1,0 +1,45 @@
+.field {
+  --boost: 0;
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+
+.grid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  /* One extra cell so the wrap-around of the drift never exposes an edge. */
+  height: calc(100% + var(--grid-size));
+  will-change: transform;
+}
+
+.major,
+.minor {
+  position: absolute;
+  inset: 0;
+}
+
+/* The drawing grid. Faint by default; reaches the hero's full strength as
+   --boost goes to 1. */
+.major {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  opacity: calc(0.45 + var(--boost) * 0.55);
+}
+
+/* Sub-division, only present while boosted — the "density" of an
+   engineering sheet under the title sequence. */
+.minor {
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: calc(var(--grid-size) / 4) calc(var(--grid-size) / 4);
+  opacity: calc(var(--boost) * 0.32);
+}

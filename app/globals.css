@@ -60,6 +60,9 @@
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-cinematic: cubic-bezier(0.65, 0, 0.08, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- chrome ---- */
+  --nav-h: 50px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -106,6 +109,9 @@ html {
 
 body {
   margin: 0;
+  /* Full-bleed media breaks out with 100vw; clip (unlike hidden) keeps
+     position: sticky working. */
+  overflow-x: clip;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-display);
@@ -168,10 +174,113 @@ video {
   }
 }
 
+/* ==========================================================================
+   MOTION GATE
+   Elements marked [data-reveal] start hidden only when all of these hold:
+   JS has run (html.js, set by an inline head script before first paint),
+   the visitor allows motion, and the owning scope hasn't handed over yet.
+   Their component then applies GSAP from-states and flips the scope to
+   "live" in the same frame — so there's no flash of final content before
+   the reveal, reduced-motion visitors never see anything hidden, and if JS
+   fails entirely the failsafe class restores everything.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  html.js [data-motion-scope="pending"] [data-reveal] {
+    opacity: 0;
+  }
+}
+
+html.js-failsafe [data-motion-scope="pending"] [data-reveal] {
+  opacity: 1;
+}
+
+/* SplitText output (lib/motion.js). Each mask clips its travelling line or
+   word to its own box; lines are block, words inline-block, so transforms
+   apply whatever tag SplitText was given. */
+.split-line-mask,
+.split-line {
+  display: block;
+}
+
+.split-word-mask,
+.split-word {
+  display: inline-block;
+}
+
+.split-line-mask,
+.split-word-mask {
+  overflow: clip;
+  /* Room for descenders so the mask never shaves glyph tails. */
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* ==========================================================================
+   DRAWN UNDERLINE
+   A hairline that draws in from the left on hover and exits to the right,
+   so the motion always reads in the direction of travel.
+   ========================================================================== */
+
+.link-draw {
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: var(--line-thickness-strong);
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--t-small) var(--ease-cinematic);
+}
+
+.link-draw:hover::after,
+.link-draw:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link-draw::after {
+    transition: none;
+  }
+}
+
 @media (max-width: 720px) {
   :root {
     --spine-x: 20px;
     --sp-7: 64px;
     --sp-8: 88px;
   }
+}
+
+/* ==========================================================================
+   CUSTOM CURSOR
+   While the custom cursor runs, hide the native one everywhere — including
+   links and buttons, whose UA pointer would otherwise double up. Text entry
+   and the CAD canvas keep native cursors (the custom one steps aside there).
+   ========================================================================== */
+
+html.cursor-enabled,
+html.cursor-enabled * {
+  cursor: none !important;
+}
+
+html.cursor-enabled :is(input, textarea, select, [contenteditable="true"], [data-cursor="native"]) {
+  cursor: auto !important;
+}
+
+html.cursor-enabled canvas {
+  cursor: grab !important;
+}
+
+html.cursor-enabled canvas:active {
+  cursor: grabbing !important;
 }

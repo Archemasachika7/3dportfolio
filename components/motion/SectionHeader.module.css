@@ -1,0 +1,101 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-7);
+}
+
+.header[data-align="center"] {
+  align-items: center;
+  text-align: center;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: var(--fs-000);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+
+.index {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+
+.slash {
+  color: var(--ink-faint);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+/* A scale rule: the hairline plus a tick every grid unit, like the edge of
+   a drawing sheet. Grows out of the label on reveal. */
+.rule {
+  position: relative;
+  flex: 1;
+  height: var(--line-thickness);
+  margin-left: var(--sp-2);
+  background: var(--line-strong);
+  transform-origin: left center;
+}
+
+.rule::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 5px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--line-strong) 0 1px,
+    transparent 1px var(--grid-size)
+  );
+}
+
+.header[data-align="center"] .rule[data-side="left"] {
+  margin-left: 0;
+  margin-right: var(--sp-2);
+  transform-origin: right center;
+}
+
+.header[data-align="center"] .rule[data-side="left"]::after {
+  background: repeating-linear-gradient(
+    to left,
+    var(--line-strong) 0 1px,
+    transparent 1px var(--grid-size)
+  );
+}
+
+.node {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: var(--line-thickness-strong) solid var(--accent);
+}
+
+.heading {
+  margin: 0;
+  font-size: var(--fs-3);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+@media (max-width: 720px) {
+  .header {
+    margin-bottom: var(--sp-6);
+  }
+  .heading {
+    font-size: var(--fs-2);
+  }
+}
