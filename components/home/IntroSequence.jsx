@@ -1,7 +1,7 @@
 "use client"
 
 import { useRef } from "react"
-import StructuralZoom from "../hero/StructuralZoom"
+import ScaleZoom from "../hero/ScaleZoom"
 import Cta from "../motion/Cta"
 import { fieldState } from "../CoordinateField"
 import useMotion, { setScope } from "../../hooks/useMotion"
@@ -287,7 +287,7 @@ export default function IntroSequence({ profile, domains = [] }) {
     <section ref={ref} className={styles.hero} aria-label="Introduction" data-motion-scope="pending">
       <div className={styles.visualLayer} data-layer="visual" aria-hidden="true">
         <div className={styles.visual} data-visual data-reveal>
-          <StructuralZoom
+          <ScaleZoom
             ref={zoomRef}
             autoStart={false}
             svgClassName={styles.visualImg}

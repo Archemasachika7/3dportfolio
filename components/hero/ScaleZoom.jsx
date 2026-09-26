@@ -1,14 +1,22 @@
 "use client"
 
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react"
-import { createStructuralZoom, LEVELS, TOTAL } from "./structuralZoom"
-import styles from "./StructuralZoom.module.css"
+import { createScaleZoom } from "./zoom/engine"
+import structure from "./zoom/structure"
+import data from "./zoom/data"
+import computation from "./zoom/computation"
+import styles from "./ScaleZoom.module.css"
+
+// Chapter order follows the headline: engineer × data × computation.
+const SCENES = [structure, data, computation]
 
 const INTRO = 1.8 // seconds for the first scale to draw itself in
 const STILL_AT = 0.9 // reduced motion: first scale, fully drawn and annotated
 
 /**
- * The structural-scale zoom as a live SVG drawing (see structuralZoom.js).
+ * The scale zoom as a live SVG drawing (see zoom/engine.js): three chapters
+ * — structure, data, computation — each zooming from a whole system down
+ * to its smallest unit, the same way of seeing applied to each discipline.
  *
  * Playback: `start()` (via ref) draws the first scale in, then loops. With
  * `autoStart` it begins on mount. It only animates while on screen, and
@@ -18,20 +26,23 @@ const STILL_AT = 0.9 // reduced motion: first scale, fully drawn and annotated
  * The readout carries each scale's title in the site's own type, so it
  * stays legible however the drawing is cropped to its container.
  */
-const StructuralZoom = forwardRef(function StructuralZoom(
+const ScaleZoom = forwardRef(function ScaleZoom(
   { autoStart = true, sheet = false, className = "", svgClassName = "", readoutClassName = "" },
   ref
 ) {
   const svgRef = useRef(null)
   const startRef = useRef(() => {})
-  const [level, setLevel] = useState(0)
+  const [pos, setPos] = useState({ scene: 0, level: 0 })
 
   useImperativeHandle(ref, () => ({ start: () => startRef.current() }), [])
 
   useEffect(() => {
     const svg = svgRef.current
     if (!svg) return
-    const zoom = createStructuralZoom(svg, { sheet, onLevel: setLevel })
+    const zoom = createScaleZoom(svg, SCENES, {
+      sheet,
+      onLevel: (scene, level) => setPos({ scene, level })
+    })
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     if (reduce) {
@@ -58,7 +69,7 @@ const StructuralZoom = forwardRef(function StructuralZoom(
         zoom.drawIn(intro)
         if (intro >= 1) phase = "loop"
       } else {
-        t = (t + dt) % TOTAL
+        t = (t + dt) % zoom.duration
         zoom.render(t)
       }
       raf = requestAnimationFrame(frame)
@@ -96,7 +107,8 @@ const StructuralZoom = forwardRef(function StructuralZoom(
     }
   }, [autoStart, sheet])
 
-  const current = LEVELS[level]
+  const scene = SCENES[pos.scene]
+  const current = scene.levels[pos.level]
 
   return (
     <div className={`${styles.wrap} ${className}`}>
@@ -108,10 +120,12 @@ const StructuralZoom = forwardRef(function StructuralZoom(
         aria-hidden="true"
       />
       <div className={`${styles.readout} ${readoutClassName}`} aria-hidden="true">
-        <span className={styles.fig}>FIG. {String(level + 1).padStart(2, "0")}</span>
+        <span className={styles.fig}>
+          FIG. {pos.scene + 1}.{pos.level + 1}
+        </span>
         <span className={styles.mask}>
-          <span key={level} className={styles.value}>
-            <span className={styles.scale}>SCALE {current.scale}</span> — {current.title}
+          <span key={`${pos.scene}-${pos.level}`} className={styles.value}>
+            {scene.name} — <span className={styles.scale}>{current.scale}</span> — {current.title}
           </span>
         </span>
       </div>
@@ -119,4 +133,4 @@ const StructuralZoom = forwardRef(function StructuralZoom(
   )
 })
 
-export default StructuralZoom
+export default ScaleZoom
