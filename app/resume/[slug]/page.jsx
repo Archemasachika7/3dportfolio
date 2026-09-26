@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import { getResumeBySlug } from "../../../lib/queries"
+import PdfViewer from "../../../components/resume/PdfViewer"
 import styles from "../resume.module.css"
 
 export const revalidate = 60
@@ -21,21 +22,11 @@ export default async function ResumeVariantPage({ params }) {
         {resume.description && <p className={styles.subheading}>{resume.description}</p>}
       </div>
 
-      <div className={styles.viewer}>
-        {resume.file_url ? (
-          <iframe src={resume.file_url} title={resume.title} className={styles.frame} />
-        ) : (
-          <p className={styles.status}>Resume file unavailable.</p>
-        )}
-
-        <div className={styles.actions}>
-          {resume.file_url && (
-            <a href={resume.file_url} download className={styles.actionLink} data-cursor="interactive">
-              DOWNLOAD
-            </a>
-          )}
-        </div>
-      </div>
+      {resume.file_url ? (
+        <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
+      ) : (
+        <p className={styles.empty}>Resume file unavailable.</p>
+      )}
 
       <a href="/resume" className={styles.back} data-cursor="interactive">
         ← CURRENT RESUME

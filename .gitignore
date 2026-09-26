@@ -12,6 +12,9 @@
 # CAD viewer WASM — copied from node_modules by scripts/copy-cad-wasm.mjs
 /public/wasm/
 
+# PDF.js worker — copied from node_modules by scripts/copy-pdf-worker.mjs
+/public/pdfjs/
+
 # debug logs
 npm-debug.log*
 yarn-debug.log*

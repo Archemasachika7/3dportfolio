@@ -1,4 +1,5 @@
-import { getCurrentResume } from "../../lib/queries"
+import { getCurrentResume, getResumes } from "../../lib/queries"
+import PdfViewer from "../../components/resume/PdfViewer"
 import styles from "./resume.module.css"
 
 export const revalidate = 60
@@ -9,7 +10,8 @@ export const metadata = {
 }
 
 export default async function ResumePage() {
-  const resume = await getCurrentResume()
+  const [resume, all] = await Promise.all([getCurrentResume(), getResumes()])
+  const others = all.filter((r) => r.file_url && r.id !== resume?.id)
 
   return (
     <section className={styles.section} aria-label="Resume">
@@ -22,36 +24,30 @@ export default async function ResumePage() {
         </p>
       </div>
 
-      {!resume ? (
+      {!resume?.file_url ? (
         <p className={styles.empty}>No resume published yet.</p>
       ) : (
-        <div className={styles.viewer}>
+        <>
           <div className={styles.viewerHeader}>
             <span className="label">RESUME — {resume.title.toUpperCase()}</span>
           </div>
+          <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
+        </>
+      )}
 
-          {resume.file_url ? (
-            <iframe
-              src={resume.file_url}
-              title={resume.title}
-              className={styles.frame}
-            />
-          ) : (
-            <p className={styles.status}>Resume file unavailable.</p>
-          )}
-
-          <div className={styles.actions}>
-            {resume.file_url && (
-              <a
-                href={resume.file_url}
-                download
-                className={styles.actionLink}
-                data-cursor="interactive"
-              >
-                DOWNLOAD
-              </a>
-            )}
-          </div>
+      {others.length > 0 && (
+        <div className={styles.others}>
+          <span className="label">OTHER VERSIONS</span>
+          <ul className={styles.otherList}>
+            {others.map((r) => (
+              <li key={r.id}>
+                <a href={`/resume/${r.slug}`} className={styles.otherLink} data-cursor="interactive">
+                  <span>{r.title}</span>
+                  {r.description && <span className={styles.otherMeta}>{r.description}</span>}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </section>
