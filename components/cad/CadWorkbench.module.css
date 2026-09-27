@@ -20,8 +20,8 @@
   background-image: linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px);
   background-size: var(--grid-size) var(--grid-size);
-  transition: border-color var(--t-micro) var(--ease-out),
-    background-color var(--t-micro) var(--ease-out);
+  transition: border-color var(--t-hover) ease,
+    background-color var(--t-hover) ease;
 }
 
 .dropzone[data-dragging="true"] {
@@ -101,12 +101,14 @@
   background: transparent;
   color: var(--ink);
   cursor: pointer;
-  transition: border-color var(--t-micro) var(--ease-out), color var(--t-micro) var(--ease-out);
+  transition: border-color var(--t-hover) ease, color var(--t-hover) ease;
 }
 
-.reset:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+@media (hover: hover) {
+  .reset:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 }
 
 .reset:focus-visible {
@@ -141,13 +143,18 @@
   border-radius: var(--radius);
   background: var(--bg-raised);
   cursor: pointer;
-  transition: border-color var(--t-micro) var(--ease-out),
-    transform var(--t-micro) var(--ease-out);
+  transition: border-color var(--t-hover) ease,
+    transform var(--dur-1) var(--ease-out-quart);
 }
 
-.sample:hover {
-  border-color: var(--accent);
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .sample:hover {
+    border-color: var(--accent);
+  }
+}
+
+.sample:active {
+  transform: scale(0.98);
 }
 
 .sample:focus-visible {
@@ -174,7 +181,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  @media (hover: hover) {
   .sample:hover {
-    transform: none;
-  }
+      transform: none;
+    }
+}
 }

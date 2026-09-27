@@ -1,6 +1,9 @@
 import { notFound } from "next/navigation"
 import { getResumeBySlug } from "../../../lib/queries"
 import PdfViewer from "../../../components/resume/PdfViewer"
+import Reveal from "../../../components/motion/Reveal"
+import PageIntro from "../../../components/motion/PageIntro"
+import SheetLabel from "../../../components/motion/SheetLabel"
 import styles from "../resume.module.css"
 
 export const revalidate = 60
@@ -16,14 +19,18 @@ export default async function ResumeVariantPage({ params }) {
 
   return (
     <section className={styles.section} aria-label="Resume">
-      <div className={styles.intro}>
-        <span className="label">RESUME</span>
-        <h1 className={styles.heading}>{resume.title.toUpperCase()}</h1>
-        {resume.description && <p className={styles.subheading}>{resume.description}</p>}
-      </div>
+      <PageIntro className={styles.intro}>
+        <SheetLabel index="04" label="RESUME" />
+        <h1 className={styles.heading} data-intro-heading><span>{resume.title.toUpperCase()}</span></h1>
+        {resume.description && <p className={styles.subheading} data-intro-item style={{ "--d": 0 }}>{resume.description}</p>}
+      </PageIntro>
 
       {resume.file_url ? (
-        <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
+        <Reveal>
+          <div data-reveal>
+            <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
+          </div>
+        </Reveal>
       ) : (
         <p className={styles.empty}>Resume file unavailable.</p>
       )}

@@ -5,6 +5,22 @@
   margin-bottom: var(--sp-6);
 }
 
+/* The chip rows mount once the explorer hydrates; they settle in on the
+   page intro's curve rather than popping in. */
+@media (prefers-reduced-motion: no-preference) {
+  .tier {
+    animation: tier-in 800ms var(--ease-out) both;
+    animation-delay: calc(120ms + var(--d, 0) * 80ms);
+  }
+}
+
+@keyframes tier-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
 .nodeRow {
   display: flex;
   flex-wrap: wrap;
@@ -12,6 +28,8 @@
 }
 
 .node {
+  position: relative;
+  isolation: isolate;
   font-family: var(--font-mono);
   font-size: var(--fs-00);
   letter-spacing: 0.08em;
@@ -20,9 +38,9 @@
   background: transparent;
   color: var(--ink);
   cursor: pointer;
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out),
-    background var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease,
+    border-color var(--t-hover) ease,
+    background var(--t-hover) ease;
 }
 
 .node[data-variant="lens"] {
@@ -31,15 +49,35 @@
   color: var(--ink-muted);
 }
 
-.node:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+@media (hover: hover) {
+  .node:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
 }
 
 .node[data-active="true"] {
-  background: var(--ink);
   border-color: var(--ink);
   color: var(--bg);
+}
+
+.node:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* The ink block behind the selected chip. One element, shared across every
+   chip (layoutId), so a new selection slides it across rather than one
+   chip switching off and another on. */
+.fill {
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+  background: var(--ink);
+}
+
+.nodeText {
+  position: relative;
 }
 
 .results {
@@ -55,9 +93,47 @@
 }
 
 .status {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
   font-family: var(--font-mono);
   font-size: var(--fs-00);
   color: var(--ink-faint);
+}
+
+/* Indeterminate progress: a short segment crossing a hairline at constant
+   speed — linear, because it stands for time passing. */
+.loadingBar {
+  position: relative;
+  width: 160px;
+  height: var(--line-thickness);
+  overflow: hidden;
+  background: var(--line);
+}
+
+.loadingBar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: var(--accent);
+  animation: mapLoading 1.1s linear infinite;
+}
+
+@keyframes mapLoading {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(250%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingBar::after {
+    animation: none;
+    transform: none;
+  }
 }
 
 .resumeCard {
@@ -88,19 +164,26 @@
   color: var(--ink);
   padding-bottom: 2px;
   border-bottom: var(--line-thickness) solid var(--ink);
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease,
+    border-color var(--t-hover) ease;
 }
 
-.actionLink:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .actionLink:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--sp-4);
+}
+
+/* Lets each card fill its row's height inside the animated wrapper. */
+.cell {
+  display: grid;
 }
 
 @media (max-width: 960px) {

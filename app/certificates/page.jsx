@@ -1,4 +1,7 @@
 import { getCertificates } from "../../lib/queries"
+import Reveal from "../../components/motion/Reveal"
+import PageIntro from "../../components/motion/PageIntro"
+import SheetLabel from "../../components/motion/SheetLabel"
 import styles from "./certificates.module.css"
 
 export const revalidate = 60
@@ -20,20 +23,20 @@ export default async function Certificates() {
 
   return (
     <section className={styles.section} aria-label="Certificates">
-      <div className={styles.intro}>
-        <span className="label">CREDENTIALS</span>
-        <h1 className={styles.heading}>CERTIFICATES & SCORES</h1>
-      </div>
+      <PageIntro className={styles.intro}>
+        <SheetLabel index="06" label="CREDENTIALS" />
+        <h1 className={styles.heading} data-intro-heading><span>CERTIFICATES & SCORES</span></h1>
+      </PageIntro>
 
       {certificates.length === 0 ? (
         <p className={styles.empty}>No certificates published yet.</p>
       ) : (
-        <ul className={styles.grid}>
+        <Reveal as="ul" className={styles.grid}>
           {certificates.map((c) => {
             const issued = formatDate(c.issue_date)
             const link = c.file_url || c.credential_url || c.image_url
             return (
-              <li key={c.id} className={styles.card}>
+              <li key={c.id} className={styles.card} data-reveal>
                 {c.image_url && (
                   <a href={c.file_url || c.image_url} target="_blank" rel="noreferrer" className={styles.picture} data-cursor="interactive">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -65,7 +68,7 @@ export default async function Certificates() {
               </li>
             )
           })}
-        </ul>
+        </Reveal>
       )}
     </section>
   )

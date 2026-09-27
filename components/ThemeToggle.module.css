@@ -10,12 +10,17 @@
   font-size: var(--fs-000);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  transition: color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease;
 }
 
-.toggle:hover,
 .toggle:focus-visible {
   color: var(--ink);
+}
+
+@media (hover: hover) {
+  .toggle:hover {
+    color: var(--ink);
+  }
 }
 
 .toggle:focus-visible {
@@ -39,7 +44,7 @@
   width: 6px;
   height: 6px;
   background: var(--accent);
-  transition: transform var(--t-small) var(--ease-cinematic);
+  transition: transform var(--dur-3) var(--ease-in-out-cubic);
 }
 
 :global(:root[data-theme="dark"]) .knob {

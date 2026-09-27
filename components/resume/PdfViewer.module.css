@@ -24,12 +24,14 @@
   color: var(--ink);
   padding-bottom: 2px;
   border-bottom: var(--line-thickness) solid var(--ink);
-  transition: color var(--t-micro) var(--ease-out), border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease, border-color var(--t-hover) ease;
 }
 
-.action:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .action:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 /* The sheet sits on a quiet ground, like paper on a desk. */
@@ -58,10 +60,18 @@
   animation: sheen 1.4s linear infinite;
 }
 
+/* Each page fades up once PDF.js has drawn it, instead of snapping in
+   over the placeholder sheen. */
 .canvas {
   display: block;
   width: 100%;
   height: 100%;
+  opacity: 0;
+  transition: opacity var(--dur-3) var(--ease-out-quart);
+}
+
+.page[data-drawn="true"] .canvas {
+  opacity: 1;
 }
 
 .placeholder {

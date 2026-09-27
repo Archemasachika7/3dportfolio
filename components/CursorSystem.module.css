@@ -47,9 +47,9 @@
   border-radius: 50%;
   border: var(--line-thickness) solid var(--line-strong);
   transition:
-    transform var(--t-small) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out),
-    background-color var(--t-micro) var(--ease-out);
+    transform var(--dur-2) var(--ease-out-quart),
+    border-color var(--t-hover) ease,
+    background-color var(--t-hover) ease;
 }
 
 .cursor[data-state="interactive"] .ringShape {
@@ -89,7 +89,7 @@
   color: var(--accent);
   opacity: 0;
   transform: translate(-50%, -50%);
-  transition: opacity var(--t-micro) var(--ease-out);
+  transition: opacity var(--dur-2) var(--ease-out-quart);
 }
 
 .cursor[data-state="project"] .label {
@@ -114,7 +114,7 @@
   background: var(--accent);
   transform-origin: 0 50%;
   opacity: 0;
-  transition: opacity var(--t-micro) var(--ease-out);
+  transition: opacity var(--dur-2) var(--ease-out-quart);
   will-change: transform;
 }
 

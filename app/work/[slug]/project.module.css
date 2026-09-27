@@ -138,11 +138,13 @@
   color: var(--bg);
   background: var(--ink);
   padding: 10px 18px;
-  transition: background var(--t-micro) var(--ease-out);
+  transition: background var(--t-hover) ease;
 }
 
-.primaryLink:hover {
-  background: var(--accent);
+@media (hover: hover) {
+  .primaryLink:hover {
+    background: var(--accent);
+  }
 }
 
 .actionLink {
@@ -153,13 +155,15 @@
   color: var(--ink);
   padding-bottom: 2px;
   border-bottom: var(--line-thickness) solid var(--ink);
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease,
+    border-color var(--t-hover) ease;
 }
 
-.actionLink:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .actionLink:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 .back {
@@ -172,6 +176,8 @@
   text-decoration: none;
 }
 
-.back:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .back:hover {
+    color: var(--ink);
+  }
 }

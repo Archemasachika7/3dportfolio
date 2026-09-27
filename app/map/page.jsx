@@ -1,6 +1,8 @@
 import { Suspense } from "react"
 import MapExplorer from "../../components/map/MapExplorer"
 import { getDomainNodes } from "../../lib/queries"
+import PageIntro from "../../components/motion/PageIntro"
+import SheetLabel from "../../components/motion/SheetLabel"
 import styles from "./map.module.css"
 
 export const revalidate = 60
@@ -15,13 +17,13 @@ export default async function MapPage() {
 
   return (
     <section className={styles.section} aria-label="Career map">
-      <div className={styles.intro}>
-        <span className="label">MAP</span>
-        <h1 className={styles.heading}>THE CAREER MAP</h1>
-        <p className={styles.subheading}>
+      <PageIntro className={styles.intro}>
+        <SheetLabel index="02" label="MAP" />
+        <h1 className={styles.heading} data-intro-heading><span>THE CAREER MAP</span></h1>
+        <p className={styles.subheading} data-intro-item style={{ "--d": 0 }}>
           Select a domain, then narrow by role if you like — the work and resume below update to match.
         </p>
-      </div>
+      </PageIntro>
 
       {primary.length === 0 ? (
         <p className={styles.empty}>Career map — awaiting content.</p>
