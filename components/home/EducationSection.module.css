@@ -44,6 +44,50 @@
   transform-origin: left center;
 }
 
+.head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+}
+
+.headText {
+  min-width: 0;
+}
+
+/* A white tile, so transparent and white-backed logos both read in either theme. */
+.logo {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  padding: 6px;
+  border-radius: 12px;
+  background: #fff;
+  border: var(--line-thickness) solid var(--line);
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.institutionLink {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.35s ease;
+}
+
+.institutionLink:hover,
+.institutionLink:focus-visible {
+  background-size: 100% 1px;
+}
+
 .institution {
   margin: 0;
   font-size: var(--fs-2);
@@ -86,5 +130,11 @@
   }
   .discipline {
     font-size: var(--fs-0);
+  }
+  .logo {
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    border-radius: 10px;
   }
 }

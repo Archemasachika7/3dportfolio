@@ -43,11 +43,27 @@ export default async function AboutPage() {
           <ul className={styles.educationList}>
             {education.map((item) => (
               <li key={item.id} className={styles.educationItem}>
-                <span className={styles.educationInstitution}>{item.institution}</span>
-                <span className={styles.educationMeta}>
-                  {[item.degree, item.field].filter(Boolean).join(" — ")}
-                  {yearRange(item) ? ` · ${yearRange(item)}` : ""}
-                  {item.cgpa ? ` · CGPA ${item.cgpa}` : ""}
+                {item.logo_url && (
+                  <span className={styles.educationLogo}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.logo_url} alt="" loading="lazy" />
+                  </span>
+                )}
+                <span className={styles.educationText}>
+                  <span className={styles.educationInstitution}>
+                    {item.website_url ? (
+                      <a href={item.website_url} target="_blank" rel="noreferrer">
+                        {item.institution}
+                      </a>
+                    ) : (
+                      item.institution
+                    )}
+                  </span>
+                  <span className={styles.educationMeta}>
+                    {[item.degree, item.field].filter(Boolean).join(" — ")}
+                    {yearRange(item) ? ` · ${yearRange(item)}` : ""}
+                    {item.cgpa ? ` · CGPA ${item.cgpa}` : ""}
+                  </span>
                 </span>
               </li>
             ))}

@@ -4,16 +4,17 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "prebuild": "npm install && node scripts/copy-cad-wasm.mjs",
+    "prebuild": "npm install && node scripts/copy-cad-wasm.mjs && node scripts/copy-pdf-worker.mjs",
     "build": "next build",
     "start": "next start",
-    "postinstall": "node scripts/copy-cad-wasm.mjs"
+    "postinstall": "node scripts/copy-cad-wasm.mjs && node scripts/copy-pdf-worker.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
     "gsap": "^3.12.5",
     "next": "^14.2.5",
     "occt-import-js": "^0.0.23",
+    "pdfjs-dist": "^4.10.38",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "three": "^0.186.0"

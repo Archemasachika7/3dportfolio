@@ -45,12 +45,14 @@ export default function EducationSection({ education = [] }) {
         gsap.set(q("[data-institution]"), { autoAlpha: 1 })
         gsap.set(q("[data-discipline]"), { autoAlpha: 0, y: 8 })
         gsap.set(q("[data-metric]"), { autoAlpha: 0 })
+        gsap.set(q("[data-logo]"), { autoAlpha: 0, scale: 0.92 })
 
         const tl = gsap.timeline({
           scrollTrigger: { trigger: item, start: mobile ? "top 88%" : "top 80%", once: true }
         })
         tl.to(q("[data-connector]"), { scaleX: 1, duration: 0.5, ease: EASE.cinematic })
           .call(lines.play, null, 0.15)
+          .to(q("[data-logo]"), { autoAlpha: 1, scale: 1, duration: 0.5, ease: EASE.cinematic }, 0.1)
           .to(q("[data-discipline]"), { autoAlpha: 1, y: 0, duration: 0.6 }, 0.35)
           .to(q("[data-metric]"), { autoAlpha: 1, duration: 0.4 }, 0.5)
 
@@ -87,12 +89,28 @@ export default function EducationSection({ education = [] }) {
               <div key={item.id} className={styles.item} data-edu>
                 <span className={styles.connector} data-connector data-reveal aria-hidden="true" />
                 <TimelineNode label={yearRange(item) ?? ""}>
-                  <p className={styles.institution} data-institution data-reveal>
-                    {item.institution}
-                  </p>
-                  <p className={styles.discipline} data-discipline data-reveal>
-                    {[item.degree, item.field].filter(Boolean).join(" — ")}
-                  </p>
+                  <div className={styles.head}>
+                    {item.logo_url && (
+                      <span className={styles.logo} data-logo data-reveal>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.logo_url} alt="" loading="lazy" />
+                      </span>
+                    )}
+                    <div className={styles.headText}>
+                      <p className={styles.institution} data-institution data-reveal>
+                        {item.website_url ? (
+                          <a href={item.website_url} target="_blank" rel="noreferrer" className={styles.institutionLink}>
+                            {item.institution}
+                          </a>
+                        ) : (
+                          item.institution
+                        )}
+                      </p>
+                      <p className={styles.discipline} data-discipline data-reveal>
+                        {[item.degree, item.field].filter(Boolean).join(" — ")}
+                      </p>
+                    </div>
+                  </div>
 
                   {item.cgpa && (
                     <div className={styles.metrics}>
