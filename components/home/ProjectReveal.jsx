@@ -106,7 +106,7 @@ export default function ProjectReveal({ project, index, total }) {
       const enter = () => {
         rect = figure.getBoundingClientRect()
         root.dataset.hover = "true"
-        gsap.to(q("[data-hover]"), { scale: 1.03, duration: 0.6, overwrite: "auto" })
+        gsap.to(q("[data-hover]"), { scale: 1.03, duration: 0.5, ease: EASE.uiOut, overwrite: "auto" })
       }
       const move = (e) => {
         if (!rect) return
@@ -124,7 +124,7 @@ export default function ProjectReveal({ project, index, total }) {
         ry(0)
         hx(0)
         hy(0)
-        gsap.to(q("[data-hover]"), { scale: 1, duration: 0.6, overwrite: "auto" })
+        gsap.to(q("[data-hover]"), { scale: 1, duration: 0.35, ease: EASE.uiOut, overwrite: "auto" })
       }
       figure.addEventListener("pointerenter", enter)
       figure.addEventListener("pointermove", move)

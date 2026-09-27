@@ -151,7 +151,7 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
       const build = gsap.timeline({ scrollTrigger: { trigger: diagram, start: "top 78%", once: true } })
       if (desktop) {
         build
-          .to(q("[data-origin]"), { scale: 1, duration: 0.35, ease: "back.out(2.4)" })
+          .to(q("[data-origin]"), { scale: 1, duration: 0.35, ease: EASE.uiOut })
           .to(q("[data-origin-label]"), { autoAlpha: 1, x: 0, duration: 0.4 }, "<0.1")
           .to(trunk, { scaleY: 1, duration: 0.5, ease: EASE.cinematic }, "<")
           .to([busL, busR], { scaleX: 1, duration: 0.7, ease: EASE.cinematic }, "-=0.1")
@@ -160,7 +160,7 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
       // Below desktop the trunk and bus aren't drawn, so the cards resolve
       // straight from their nodes.
       build
-        .to(nodes, { scale: 1, duration: 0.35, stagger: 0.08, ease: "back.out(2.4)" }, desktop ? "-=0.3" : 0)
+        .to(nodes, { scale: 1, duration: 0.35, stagger: 0.08, ease: EASE.uiOut }, desktop ? "-=0.3" : 0)
         .to(
           byDistance.map((c) => c.querySelector("[data-visual]")),
           { clipPath: "inset(0% 0% 0% 0%)", duration: 0.9, stagger: 0.08, ease: EASE.cinematic },
@@ -179,13 +179,13 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
 
       const activate = (card) => {
         mark(card)
-        gsap.to(card.querySelector("[data-node]"), { scale: 1.9, duration: 0.3, ease: "back.out(2)", overwrite: "auto" })
+        gsap.to(card.querySelector("[data-node]"), { scale: 1.9, duration: 0.18, ease: EASE.uiOut, overwrite: "auto" })
 
         if (!interactive) return
         const i = cards.indexOf(card)
         cards.forEach((c, j) => {
           if (c === card) return
-          gsap.to(c.querySelector("[data-body]"), { x: j < i ? -6 : 6, duration: 0.45, overwrite: "auto" })
+          gsap.to(c.querySelector("[data-body]"), { x: j < i ? -6 : 6, duration: 0.24, ease: EASE.uiInOut, overwrite: "auto" })
         })
 
         if (card.dataset.connected !== "true") return
@@ -207,9 +207,9 @@ export default function DomainBranches({ domainNodes = [], media = {} }) {
 
       const deactivate = (card) => {
         mark(null)
-        gsap.to(card.querySelector("[data-node]"), { scale: 1, duration: 0.3, overwrite: "auto" })
+        gsap.to(card.querySelector("[data-node]"), { scale: 1, duration: 0.12, ease: EASE.uiOut, overwrite: "auto" })
         if (!interactive) return
-        cards.forEach((c) => gsap.to(c.querySelector("[data-body]"), { x: 0, duration: 0.45, overwrite: "auto" }))
+        cards.forEach((c) => gsap.to(c.querySelector("[data-body]"), { x: 0, duration: 0.24, ease: EASE.uiInOut, overwrite: "auto" }))
         gsap.to(glow, { scaleX: 0, duration: 0.3, ease: EASE.out, overwrite: "auto" })
       }
 

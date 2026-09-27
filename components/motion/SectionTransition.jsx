@@ -46,7 +46,7 @@ export default function SectionTransition({ from, to }) {
       tl.to(q("[data-line]"), { scaleX: 1, duration: 1 }, 0)
         .to(q("[data-head]"), { x: width, duration: 1 }, 0)
         .to(q("[data-head]"), { autoAlpha: 0, duration: 0.12 }, 0.9)
-        .to(q("[data-center]"), { scale: 1, duration: 0.18, ease: "back.out(2.4)" }, 0.72)
+        .to(q("[data-center]"), { scale: 1, duration: 0.18, ease: EASE.uiOut }, 0.72)
         .to(q("[data-drop]"), { scaleY: 1, duration: 0.3, ease: EASE.out }, 0.8)
         .to(q("[data-caption]"), { autoAlpha: 1, y: 0, duration: 0.2, ease: EASE.out }, 0.78)
 

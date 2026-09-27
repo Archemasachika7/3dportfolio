@@ -50,7 +50,7 @@ export default function SectionHeader({ index, label, lines, align = "left", as:
           "-=0.25"
         )
         .to(rules, { scaleX: 1, duration: mobile ? 0.6 : 0.95, ease: EASE.cinematic }, "-=0.35")
-        .to(nodes, { scale: 1, duration: 0.4, ease: "back.out(2.4)" }, "-=0.3")
+        .to(nodes, { scale: 1, duration: 0.4, ease: EASE.uiOut }, "-=0.3")
         .call(lines.play, null, "-=0.55")
     },
     [headingKey, label, index]

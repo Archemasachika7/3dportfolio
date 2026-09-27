@@ -71,7 +71,7 @@ export default function ProblemToDecision({ media }) {
 
         // Phase 1 — the pattern forms.
         tl.to(steps, { x: 0, y: 0, rotation: 0, autoAlpha: 1, duration: 0.4, stagger: 0.05, ease: EASE.out }, 0)
-          .to(q("[data-step-node]"), { scale: 1, duration: 0.1, stagger: 0.05, ease: "back.out(2)" }, 0.32)
+          .to(q("[data-step-node]"), { scale: 1, duration: 0.1, stagger: 0.05, ease: EASE.uiOut }, 0.32)
 
         // Phase 2 — the line runs through it, activating each step.
         const line = { p: 0 }

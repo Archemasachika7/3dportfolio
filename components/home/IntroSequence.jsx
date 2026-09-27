@@ -152,13 +152,13 @@ export default function IntroSequence({ profile, domains = [] }) {
       intro
         .to(fieldState, { boost: 1, duration: 1.3 * T, ease: "power2.inOut" }, 0.25)
         .to(q("[data-spine]"), { scaleY: 1, duration: 1.1 * T, ease: EASE.cinematic }, 0.35)
-        .to(q("[data-crop]"), { scale: 1, duration: 0.5, stagger: 0.07, ease: "back.out(2)" }, 0.5)
+        .to(q("[data-crop]"), { scale: 1, duration: 0.5, stagger: 0.07, ease: EASE.uiOut }, 0.5)
         .to(q("[data-annot]"), { autoAlpha: 1, y: 0, duration: 0.6, stagger: 0.1 }, 0.7)
 
       // 01 → 02 — hello, in a few languages, while the field comes up
       const greetWord = q("[data-greeting-word]")[0]
       const G = mobile ? 0.11 : 0.13
-      intro.to(q("[data-greeting-node]"), { scale: 1, duration: 0.3, ease: "back.out(2.4)" }, 0.2)
+      intro.to(q("[data-greeting-node]"), { scale: 1, duration: 0.3, ease: EASE.uiOut }, 0.2)
       GREETINGS.forEach((word, i) => {
         const at = 0.3 + i * G * T
         intro
@@ -201,7 +201,7 @@ export default function IntroSequence({ profile, domains = [] }) {
         )
 
       // 05 — the structural line crosses the sheet
-        .to(q("[data-track-node]"), { scale: 1, duration: 0.25, ease: "back.out(2.5)" }, 2.1 * T)
+        .to(q("[data-track-node]"), { scale: 1, duration: 0.25, ease: EASE.uiOut }, 2.1 * T)
         .to(q("[data-track-line]"), { scaleX: 1, duration: 1.15 * T, ease: EASE.cinematic }, 2.15 * T)
         .to(
           q("[data-track-node]"),
