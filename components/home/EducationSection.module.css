@@ -80,12 +80,17 @@
   background-size: 0% 1px;
   background-position: 0 100%;
   background-repeat: no-repeat;
-  transition: background-size 0.35s ease;
+  transition: background-size var(--dur-3) var(--ease-in-out-cubic);
 }
 
-.institutionLink:hover,
 .institutionLink:focus-visible {
   background-size: 100% 1px;
+}
+
+@media (hover: hover) {
+  .institutionLink:hover {
+    background-size: 100% 1px;
+  }
 }
 
 .institution {

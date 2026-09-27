@@ -4,7 +4,7 @@ export default function WorkCard({ project }) {
   const primaryReport = project.reports?.[0]
 
   return (
-    <article className={styles.card} data-cursor="project" data-cursor-label="OPEN">
+    <article className={styles.card} data-cursor="project" data-cursor-label="OPEN" data-reveal>
       <a href={`/work/${project.slug}`} className={styles.thumbLink} data-cursor="project">
         <div className={styles.thumb}>
           {project.thumbnail_url ? (

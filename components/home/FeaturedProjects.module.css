@@ -160,10 +160,15 @@
   text-transform: uppercase;
   color: var(--ink);
   padding-bottom: 2px;
-  transition: color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease;
 }
 
-.allLink:hover,
 .allLink:focus-visible {
   color: var(--accent);
+}
+
+@media (hover: hover) {
+  .allLink:hover {
+    color: var(--accent);
+  }
 }

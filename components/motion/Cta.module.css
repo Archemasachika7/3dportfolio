@@ -25,7 +25,7 @@
 .text {
   position: relative;
   z-index: 1;
-  transition: color var(--t-small) var(--ease-cinematic);
+  transition: color var(--dur-3) var(--ease-in-out-cubic);
 }
 
 /* The wipe. Its transform-origin follows data-from, so it enters from the
@@ -36,7 +36,7 @@
   background: var(--ink);
   transform: scaleX(0);
   transform-origin: left center;
-  transition: transform var(--t-small) var(--ease-cinematic);
+  transition: transform var(--dur-3) var(--ease-in-out-cubic);
 }
 
 .cta[data-from="right"] .fill {

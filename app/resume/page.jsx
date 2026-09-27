@@ -1,5 +1,8 @@
 import { getCurrentResume, getResumes } from "../../lib/queries"
 import PdfViewer from "../../components/resume/PdfViewer"
+import Reveal from "../../components/motion/Reveal"
+import PageIntro from "../../components/motion/PageIntro"
+import SheetLabel from "../../components/motion/SheetLabel"
 import styles from "./resume.module.css"
 
 export const revalidate = 60
@@ -15,41 +18,44 @@ export default async function ResumePage() {
 
   return (
     <section className={styles.section} aria-label="Resume">
-      <div className={styles.intro}>
-        <span className="label">RESUME</span>
-        <h1 className={styles.heading}>THE RIGHT VERSION FOR THE RIGHT PATH</h1>
-        <p className={styles.subheading}>
+      <PageIntro className={styles.intro}>
+        <SheetLabel index="04" label="RESUME" />
+        <h1 className={styles.heading} data-intro-heading><span>THE RIGHT VERSION FOR THE RIGHT PATH</span></h1>
+        <p className={styles.subheading} data-intro-item style={{ "--d": 0 }}>
           Looking for a specific domain? The <a href="/map">career map</a> matches you to the
           most relevant resume automatically.
         </p>
-      </div>
+      </PageIntro>
 
-      {!resume?.file_url ? (
-        <p className={styles.empty}>No resume published yet.</p>
-      ) : (
-        <>
-          <div className={styles.viewerHeader}>
-            <span className="label">RESUME — {resume.title.toUpperCase()}</span>
+      <Reveal style={{ display: "contents" }}>
+
+        {!resume?.file_url ? (
+          <p className={styles.empty}>No resume published yet.</p>
+        ) : (
+          <div data-reveal>
+            <div className={styles.viewerHeader}>
+              <span className="label">RESUME — {resume.title.toUpperCase()}</span>
+            </div>
+            <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
           </div>
-          <PdfViewer url={resume.file_url} title={resume.title} fileName={resume.file_name} isPdf={resume.is_pdf} />
-        </>
-      )}
+        )}
 
-      {others.length > 0 && (
-        <div className={styles.others}>
-          <span className="label">OTHER VERSIONS</span>
-          <ul className={styles.otherList}>
-            {others.map((r) => (
-              <li key={r.id}>
-                <a href={`/resume/${r.slug}`} className={styles.otherLink} data-cursor="interactive">
-                  <span>{r.title}</span>
-                  {r.description && <span className={styles.otherMeta}>{r.description}</span>}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+        {others.length > 0 && (
+          <div className={styles.others} data-reveal>
+            <span className="label">OTHER VERSIONS</span>
+            <ul className={styles.otherList}>
+              {others.map((r) => (
+                <li key={r.id}>
+                  <a href={`/resume/${r.slug}`} className={styles.otherLink} data-cursor="interactive">
+                    <span>{r.title}</span>
+                    {r.description && <span className={styles.otherMeta}>{r.description}</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </Reveal>
     </section>
   )
 }

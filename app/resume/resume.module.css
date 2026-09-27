@@ -74,13 +74,15 @@
   color: var(--ink);
   padding-bottom: 2px;
   border-bottom: var(--line-thickness) solid var(--ink);
-  transition: color var(--t-micro) var(--ease-out),
-    border-color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease,
+    border-color var(--t-hover) ease;
 }
 
-.actionLink:hover {
-  color: var(--accent);
-  border-color: var(--accent);
+@media (hover: hover) {
+  .actionLink:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
 }
 
 .back {
@@ -93,8 +95,10 @@
   text-decoration: none;
 }
 
-.back:hover {
-  color: var(--ink);
+@media (hover: hover) {
+  .back:hover {
+    color: var(--ink);
+  }
 }
 
 .others {
@@ -120,11 +124,13 @@
   border-bottom: var(--line-thickness) solid var(--line);
   color: var(--ink);
   text-decoration: none;
-  transition: color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease;
 }
 
-.otherLink:hover {
-  color: var(--accent);
+@media (hover: hover) {
+  .otherLink:hover {
+    color: var(--accent);
+  }
 }
 
 .otherMeta {

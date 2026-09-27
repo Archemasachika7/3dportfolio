@@ -278,7 +278,7 @@ export default function CadViewer({ url, file, name, active = true, onClose }) {
               <div className={styles.track}>
                 <div
                   className={styles.bar}
-                  style={progress === null ? { width: "40%" } : { width: `${progress}%` }}
+                  style={progress === null ? undefined : { transform: `scaleX(${progress / 100})` }}
                   data-indeterminate={progress === null}
                 />
               </div>

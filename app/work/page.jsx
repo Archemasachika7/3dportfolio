@@ -1,5 +1,8 @@
 import WorkCard from "../../components/work/WorkCard"
 import { getPublishedProjects, getProjectsByTagSlugs, getDomainNodes } from "../../lib/queries"
+import Reveal from "../../components/motion/Reveal"
+import PageIntro from "../../components/motion/PageIntro"
+import SheetLabel from "../../components/motion/SheetLabel"
 import styles from "./work.module.css"
 
 export const revalidate = 60
@@ -20,36 +23,38 @@ export default async function WorkPage({ searchParams }) {
 
   return (
     <section className={styles.section} aria-label="Work">
-      <div className={styles.intro}>
-        <span className="label">WORK</span>
-        <h1 className={styles.heading}>EVERYTHING I'VE BUILT</h1>
-        <p className={styles.subheading}>ENGINEERING / DATA / ANALYTICS / BUSINESS / TECH</p>
-      </div>
+      <PageIntro style={{ display: "contents" }}>
+        <div className={styles.intro}>
+          <SheetLabel index="01" label="WORK" />
+          <h1 className={styles.heading} data-intro-heading><span>EVERYTHING I'VE BUILT</span></h1>
+          <p className={styles.subheading} data-intro-item style={{ "--d": 0 }}>ENGINEERING / DATA / ANALYTICS / BUSINESS / TECH</p>
+        </div>
 
-      <nav className={styles.filters} aria-label="Filter by domain">
-        <a href="/work" className={styles.filter} data-active={!activeNode ? "true" : "false"}>
-          ALL
-        </a>
-        {lens.map((node) => (
-          <a
-            key={node.id}
-            href={`/work?filter=${node.slug}`}
-            className={styles.filter}
-            data-active={activeNode?.slug === node.slug ? "true" : "false"}
-          >
-            {node.label}
+        <nav className={styles.filters} aria-label="Filter by domain" data-intro-item style={{ "--d": 1 }}>
+          <a href="/work" className={styles.filter} data-active={!activeNode ? "true" : "false"}>
+            ALL
           </a>
-        ))}
-      </nav>
+          {lens.map((node) => (
+            <a
+              key={node.id}
+              href={`/work?filter=${node.slug}`}
+              className={styles.filter}
+              data-active={activeNode?.slug === node.slug ? "true" : "false"}
+            >
+              {node.label}
+            </a>
+          ))}
+        </nav>
+      </PageIntro>
 
       {projects.length === 0 ? (
         <p className={styles.empty}>No published projects yet.</p>
       ) : (
-        <div className={styles.grid}>
+        <Reveal className={styles.grid}>
           {projects.map((project) => (
             <WorkCard key={project.id} project={project} />
           ))}
-        </div>
+        </Reveal>
       )}
     </section>
   )

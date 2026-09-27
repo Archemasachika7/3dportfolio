@@ -61,7 +61,23 @@
   /* ---- easing ---- */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-cinematic: cubic-bezier(0.65, 0, 0.08, 1);
-  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ---- interface motion ----
+     The tokens above pace the storytelling (reveals, scroll scenes). These
+     pace the interface: things the visitor triggers again and again, where
+     speed reads as responsiveness.
+       hover / focus colour     --t-hover, plain ease
+       enter / exit             --ease-out-quart, --dur-2…--dur-3
+       on-screen morph          --ease-in-out-cubic, --dur-3
+       time / progress          linear */
+  --dur-1: 120ms;
+  --dur-2: 180ms;
+  --dur-3: 240ms;
+  --dur-4: 300ms;
+  --dur-5: 500ms;
+  --t-hover: 150ms;
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
 
   /* ---- chrome ---- */
   --nav-h: 50px;
@@ -176,13 +192,156 @@ video {
    ========================================================================== */
 
 @media (prefers-reduced-motion: no-preference) {
-  html.js [data-motion-scope="pending"] [data-reveal] {
+  html.js [data-motion-scope="pending"] [data-reveal],
+  html.js [data-motion-scope="pending"] [data-node] {
+    opacity: 0;
+  }
+
+  /* Scale rules draw in from nothing, so they start collapsed too. */
+  html.js [data-motion-scope="pending"] [data-rule] {
+    transform: scaleX(0);
+  }
+}
+
+html.js-failsafe [data-motion-scope="pending"] [data-reveal],
+html.js-failsafe [data-motion-scope="pending"] [data-node] {
+  opacity: 1;
+}
+
+html.js-failsafe [data-motion-scope="pending"] [data-rule] {
+  transform: none;
+}
+
+/* ==========================================================================
+   PAGE INTRO
+   An inner page's opening block (components/motion/PageIntro). Pure CSS, so
+   it runs from the first painted frame whatever the scripts are doing:
+   index → typed label → heading rising out of its mask → scale rule drawing
+   out → the rest settling in → terminal node. Reduced motion: no animation.
+   ========================================================================== */
+
+[data-intro] [data-intro-heading] {
+  /* The mask the title rises out of; padded so descenders aren't shaved. */
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+[data-intro] [data-intro-heading] > span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-intro] [data-sheet-index] {
+    animation: intro-slide 450ms var(--ease-out) 80ms both;
+  }
+
+  [data-intro] [data-char] {
+    animation: intro-type 1ms steps(1) both;
+    animation-delay: calc(200ms + var(--i, 0) * 22ms);
+  }
+
+  [data-intro] [data-intro-heading] > span {
+    animation: intro-rise 1050ms var(--ease-out) 220ms both;
+  }
+
+  [data-intro] [data-rule] {
+    animation: intro-draw 900ms var(--ease-cinematic) 380ms both;
+  }
+
+  [data-intro] [data-node] {
+    animation: intro-pin 300ms var(--ease-out-quart) 1100ms both;
+  }
+
+  [data-intro] [data-intro-item] {
+    animation: intro-settle 800ms var(--ease-out) both;
+    animation-delay: calc(600ms + var(--d, 0) * 80ms);
+  }
+}
+
+@keyframes intro-slide {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+@keyframes intro-type {
+  from {
     opacity: 0;
   }
 }
 
-html.js-failsafe [data-motion-scope="pending"] [data-reveal] {
-  opacity: 1;
+@keyframes intro-rise {
+  from {
+    transform: translateY(110%);
+  }
+}
+
+@keyframes intro-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes intro-pin {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+@keyframes intro-settle {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* ==========================================================================
+   SCROLL REVEAL
+   Content below an intro (components/motion/Reveal): items rise into place
+   as they enter the viewport; data-reveal="wipe" media unmasks top to
+   bottom while the picture settles from a slight zoom. The component only
+   marks items data-shown — the motion is here.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal-scope] [data-reveal] {
+    --reveal-y: 24px;
+    transition:
+      opacity 800ms var(--ease-out) var(--reveal-delay, 0ms),
+      transform 800ms var(--ease-out) var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal-scope][data-motion-scope="live"] [data-reveal]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(var(--reveal-y));
+  }
+
+  [data-reveal-scope] [data-reveal="wipe"] {
+    transition: clip-path 1100ms var(--ease-cinematic) var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal-scope][data-motion-scope="live"] [data-reveal="wipe"]:not([data-shown]) {
+    opacity: 1;
+    transform: none;
+    clip-path: inset(0 0 100% 0);
+  }
+
+  [data-reveal-scope] [data-reveal="wipe"] :is(img, video) {
+    transition: transform 1400ms var(--ease-out) var(--reveal-delay, 0ms);
+  }
+
+  [data-reveal-scope][data-motion-scope="live"] [data-reveal="wipe"]:not([data-shown]) :is(img, video) {
+    transform: scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (max-width: 720px) {
+  [data-reveal-scope] [data-reveal] {
+    --reveal-y: 16px;
+  }
 }
 
 /* SplitText output (lib/motion.js). Each mask clips its travelling line or
@@ -228,13 +387,19 @@ html.js-failsafe [data-motion-scope="pending"] [data-reveal] {
   background: currentColor;
   transform: scaleX(0);
   transform-origin: right center;
-  transition: transform var(--t-small) var(--ease-cinematic);
+  transition: transform var(--dur-3) var(--ease-in-out-cubic);
 }
 
-.link-draw:hover::after,
 .link-draw:focus-visible::after {
   transform: scaleX(1);
   transform-origin: left center;
+}
+
+@media (hover: hover) {
+  .link-draw:hover::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

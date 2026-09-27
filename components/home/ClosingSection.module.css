@@ -111,12 +111,17 @@
   letter-spacing: 0.1em;
   color: var(--ink-muted);
   padding-bottom: 2px;
-  transition: color var(--t-micro) var(--ease-out);
+  transition: color var(--t-hover) ease;
 }
 
-.link:hover,
 .link:focus-visible {
   color: var(--ink);
+}
+
+@media (hover: hover) {
+  .link:hover {
+    color: var(--ink);
+  }
 }
 
 .link::after {
